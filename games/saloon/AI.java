@@ -36,7 +36,7 @@ public class AI extends BaseAI
      */
     public String getName()
     {
-        return "Saloon Java Player"; // REPLACE THIS WITH YOUR TEAM NAME!
+        return "Fussy Fugitives"; // REPLACE THIS WITH YOUR TEAM NAME!
     }
 
     /**
