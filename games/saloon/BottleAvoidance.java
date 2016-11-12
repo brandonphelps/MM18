@@ -1,11 +1,11 @@
 package games.saloon;
 
 
-public class BottleAvoider
+public class BottleAvoidance
 {
-	static Bottle CowboyNeedsToAvoidBottle(Game game, CowboyHelper cowboy)//TODO: CONSIDER THE DIRECTION WE WANT TO GO AND THE DIRECTION OF THE BOTTLE.
+	static Bottle CowboyNeedsToAvoidBottle(Game game, CowboyHelper cowboyH)//TODO: CONSIDER THE DIRECTION WE WANT TO GO AND THE DIRECTION OF THE BOTTLE.
 	{
-		Tile nextTile = cowboy.futureTile(1);
+		Tile nextTile = cowboyH.FutureTile(1);
 		for(Bottle b: game.bottles)
 		{
 			if(GetFutureBottlePosition(game, b, 1) == nextTile)
@@ -20,44 +20,44 @@ public class BottleAvoider
 	}
 
 
-	static boolean AvoidBottle(Game game, CowboyHelper cowboy)
+	static boolean AvoidBottle(Game game, CowboyHelper cowboyH)
 	{
-		Tile moveTarget = this.GetBottleAvoidanceSuggestion(game, cowboy);
+		Tile moveTarget = GetBottleAvoidanceSuggestion(game, cowboyH);
 		if(moveTarget != null)
 		{
 			//We found somewhere to go.
-			if(cowboy.move(moveTarget) == false)
+			if(cowboyH.cowboy.move(moveTarget) == false)
 			{
 				//The move failed somehow.
-				system.out.println("Failed to move cowboy  cowboy id:" + cowboy.cowboy.id + "   tile x, y = (" + moveTarget.x + ", " + moveTarget.y + ")");
+				System.out.println("Failed to move cowboy  cowboy id:" + cowboyH.cowboy.id + "   tile x, y = (" + moveTarget.x + ", " + moveTarget.y + ")");
 				return false;
 			}
 			return true;
 		} else
 		{
 			//Failed to find a place to move.
-			system.out.println("Couldn't find a place where cowboy "+ cowboy.cowboy.id+"could go to avoid the bottle.");
+			System.out.println("Couldn't find a place where cowboy "+ cowboyH.cowboy.id+"could go to avoid the bottle.");
 			return false;
 		}
 	}
 
 
-	static Tile GetBottleAvoidanceSuggestion(Game game, CowboyHelper cowboy)
+	static Tile GetBottleAvoidanceSuggestion(Game game, CowboyHelper cowboyH)
 	{
-
+		return null;
 	}
 
 
 	//Returns the tile where the bottle will be in turnOffset turns. returns null if the bottle will not exist.
 	static Tile GetFutureBottlePosition(Game game, Bottle bottle, int turnOffset)
 	{
-		if(bottle.isDestroyed())
+		if(bottle.isDestroyed)
 		{
 			return null;
 		}
 		int xOffsetPerTurn = 0;
 		int yOffsetPerTurn = 0;
-		bool directionIsX;
+		boolean directionIsX = false;
 		switch(bottle.direction)
 		{
 			case Constants.NORTH:
@@ -81,7 +81,8 @@ public class BottleAvoider
 				break;
 
 			default:
-				system.out.println("Invalid bottle direction (GetFutureBottlePosition).");	
+				System.out.println("Invalid bottle direction (GetFutureBottlePosition).");
+				break;
 		}
 
 		int futureXPos = bottle.tile.x + xOffsetPerTurn * turnOffset;

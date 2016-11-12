@@ -2,9 +2,9 @@ package games.saloon;
 
 public class Constants
 {
-	static String NORTH = "North";
-	static String SOUTH = "South";
-	static String EAST = "East";
-	static String WEST = "West";
+	static final String NORTH = "North";
+	static final String SOUTH = "South";
+	static final String EAST = "East";
+	static final String WEST = "West";
 
 }
