@@ -93,7 +93,7 @@ public class AI extends BaseAI
         for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
-	  Goal g = new Goal();
+	  PianoGoal g = new PianoGoal();
 	  System.out.println("My Health: " + cowboy.health);
 	  // if this cowboy is not dead then make him our active cowboy we will try to control
 	  if(!cowboy.isDead)

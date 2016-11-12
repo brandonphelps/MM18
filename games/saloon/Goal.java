@@ -2,11 +2,12 @@
 
 package games.saloon;
 
-
-
-public class Goal
+public abstract class Goal
 {
-  public Goal() {
+  public Goal()
+  {
     
   }
+
+  public abstract void act(Cowboy cowboy, Game game);
 }
