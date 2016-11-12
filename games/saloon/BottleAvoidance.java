@@ -42,8 +42,81 @@ public class BottleAvoidance
 	}
 
 
-	static Tile GetBottleAvoidanceSuggestion(Game game, CowboyHelper cowboyH)
+	//Returns null if it doesn't suggest anywhere specific to go.
+	static Tile GetBottleAvoidanceSuggestion(Game game, CowboyHelper cowboyH)/////TODO: MAYBE MAKE THIS LOOK AHEAD MORE!
 	{
+		Bottle bottle = CowboyNeedsToAvoidBottle(game, cowboyH);
+		if(bottle == null)
+			return null;
+
+
+		Tile targetTile = cowboyH.TargetTile();
+		Tile nextTile = cowboyH.FutureTile(1);
+		Tile currentTile = cowboyH.cowboy.tile;
+		if(currentTile == null)
+		{
+			//Something went wrong.
+			return null;
+		}
+		if((nextTile == null) || (targetTile == null) || (nextTile == currentTile))
+		{
+			//We are where we want to go. Try to avoid without moving far.
+			
+
+
+
+
+
+		} else
+		{
+			//We are trying to go somewhere else.
+			int targetXOffset = targetTile.x - currentTile.x;
+			int targetYOffset = targetTile.y - currentTile.y;/////TODO: CHECK THIS!!!
+
+			Tile positiveAvoidanceTile;
+			Tile negativeAvoidanceTile;
+			boolean preferPositiveDirection;
+			if(targetXOffset != 0)////TODO: MAYBE OPTIMIZE AND DON'T ALWAYS DO X FIRST. OPTIMIZE ON SHORTEST PATH.
+			{
+				//We will be avoiding by moving north or south.
+				positiveAvoidanceTile = currentTile.tileSouth;
+				negativeAvoidanceTile = currentTile.tileNorth;
+				preferPositiveDirection = (targetYOffset > 0);
+			} else if(targetYOffset != 0)
+			{
+				//We will be avoiding by moving east or west.
+				positiveAvoidanceTile = currentTile.tileEast;
+				negativeAvoidanceTile = currentTile.tileWest;
+				preferPositiveDirection = (targetXOffset > 0);
+			} else
+			{
+				System.out.println("Something weird in bottle avoidance(1)");
+				return null;
+			}
+
+			if(positiveAvoidanceTile.isPathable() == false && negativeAvoidanceTile.isPathable() == false)
+			{
+				//We need to avoid, but there isn't anything we can do.
+				return null;
+			} else if(positiveAvoidanceTile.isPathable() == false)
+			{
+				return negativeAvoidanceTile;
+			} else if(negativeAvoidanceTile.isPathable() == false)
+			{
+				return positiveAvoidanceTile;
+			} else
+			{
+				//We have our choice in direction.
+				if(preferPositiveDirection)
+				{
+					return positiveAvoidanceTile;
+				} else
+				{
+					return negativeAvoidanceTile;
+				}
+			}
+		}
+
 		return null;
 	}
 
