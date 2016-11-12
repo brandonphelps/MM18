@@ -3,17 +3,23 @@ package games.saloon;
 
 public class CowboyHelper
 {
+  // the specific cowboy that the goal is assoiciated with
   private Cowboy cowboy;
   private Goal goal;
 
-  public CowboyHelper(Goal g, Cowboy c)
+  public CowboyHelper(Cowboy c, Goal g)
   {
     cowboy = c;
     goal = g;
   }
 
-  public void act(Game game)
+  public void Act(Game game)
   {
-    goal.act(cowboy, game);
+    goal.Act(cowboy, game);
+  }
+
+  public Tile FutureTile(int turnOffset)
+  {
+    return null;
   }
 }

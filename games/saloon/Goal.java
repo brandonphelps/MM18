@@ -9,5 +9,5 @@ public abstract class Goal
     
   }
 
-  public abstract void act(Cowboy cowboy, Game game);
+  public abstract void Act(Cowboy cowboy, Game game);
 }

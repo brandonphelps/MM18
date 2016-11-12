@@ -90,16 +90,17 @@ public class AI extends BaseAI
 
         // Find the active cowboy to try to do things with
         Cowboy activeCowboy = null;
+	CowboyHelper activeC = null;
+
+	List<Cowboy> activeCowboys = new ArrayList<Cowboy>();
         for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
-	  PianoGoal g = new PianoGoal();
-	  System.out.println("My Health: " + cowboy.health);
 	  // if this cowboy is not dead then make him our active cowboy we will try to control
 	  if(!cowboy.isDead)
 	  {
 	    activeCowboy = cowboy;
-	    break;
+	    activeCowboys.add(cowboy);
 	  }
         }
 
@@ -145,43 +146,16 @@ public class AI extends BaseAI
                 if (furnishing.isPiano && !furnishing.isDestroyed)
 		{
                     piano = furnishing;
-                    break;
+		    break;
                 }
             }
 
-            // There will always be pianos or the game will end. No need to check for existence.
-            // Attempt to move toward the piano by finding a path.
-            if (activeCowboy.canMove && !activeCowboy.isDead)
-	    {
-                System.out.println("Trying to use Cowboy #" + activeCowboy.id);
+	    activeC = new CowboyHelper(activeCowboy, new PianoGoal(piano));
 
-                // Find a path of tiles to the piano from our active cowboy's tile
-                List<Tile> path = this.findPath(activeCowboy.tile, piano.tile);
 
-                // if there is a path, move along it
-                //      length 0 means no path could be found to the tile
-                //      length 1 means the piano is adjacent, and we can't move onto the same tile as the piano
-                if (path.size() > 1) {
-                    System.out.println("2. Moving to Tile #" + path.get(0).id);
-                    activeCowboy.move(path.get(0));
-                }
-            }
+	    activeC.Act(game);
 
-            // 3. Try to play a nearby piano.
-            if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0) {
-                List<Tile> neighbors = activeCowboy.tile.getNeighbors();
-
-                for (int i = 0; i < neighbors.size(); i++) {
-                    Tile neighbor = neighbors.get(i);
-
-                    if (neighbor.furnishing != null && neighbor.furnishing.isPiano) {
-                        System.out.println("3. Playing piano (Furnishing) #" + neighbor.furnishing.id);
-                        activeCowboy.play(neighbor.furnishing);
-                        break;
-                    }
-                }
-            }
-
+	    /*
             // 4. Try to act with active cowboy
             if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0)
 	    {
@@ -218,13 +192,13 @@ public class AI extends BaseAI
                     }
                 }
             }
+	    */
         }
 
         System.out.println("Ending my turn.");
 
         return true;
     }
-
     /**
      * A very basic path finding algorithm (Breadth First Search) that when given a starting Tile, will return a valid path to the goal Tile.
      * @param  start  the starting Tile
