@@ -6,6 +6,7 @@ import java.util.List;
 public class PianoGoal extends Goal
 {
   private Furnishing piano = null;
+
   public PianoGoal()
   {
     
@@ -69,5 +70,14 @@ public class PianoGoal extends Goal
 	}
       }
     }
+  }
+
+  public Tile TargetTile()
+  {
+    if(piano != null)
+    {
+      return piano.tile;
+    }
+    return null;
   }
 }

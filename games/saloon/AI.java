@@ -68,7 +68,10 @@ public class AI extends BaseAI
         super.ended(won, reason);
     }
 
+  public String activeCowboyId = null;
 
+  public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
+  
     /**
      * This is called every time it is this AI.player's turn.
      *
@@ -88,19 +91,70 @@ public class AI extends BaseAI
 
         System.out.println("Start of my turn: " + this.game.currentTurn);
 
+
+	
+
+
+	for(int i = 0; i < this.player.cowboys.size(); i++)
+	{
+	  Cowboy cowboy = this.player.cowboys.get(i); 
+	  //cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(
+	}
+
         // Find the active cowboy to try to do things with
         Cowboy activeCowboy = null;
+
 	CowboyHelper activeC = null;
 
+	boolean foundId = false;
+
+	for(int i = 0; i < this.player.cowboys.size(); i++)
+	{
+	  Cowboy cowboy = this.player.cowboys.get(i);
+
+	  if(cowboy.isDead && activeCowboyId == cowboy.id)
+	  {
+	    System.out.println("My cowboy died: " + cowboy.id);
+	    activeCowboyId = null;
+	    break;
+	  }
+	  if(cowboy.id == activeCowboyId)
+	  {
+	    foundId = true;
+	    break;
+	  }
+	}
+
+	if(!foundId)
+	{
+	  activeCowboyId = null;
+	}
+	
 	List<Cowboy> activeCowboys = new ArrayList<Cowboy>();
         for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
+
+	  System.out.println("Current activeCowboyid: " + activeCowboyId);
+	  
 	  // if this cowboy is not dead then make him our active cowboy we will try to control
 	  if(!cowboy.isDead)
 	  {
-	    activeCowboy = cowboy;
-	    activeCowboys.add(cowboy);
+	    System.out.println("cowboy isn't dead: " + cowboy.id);
+	    if(activeCowboyId == null)
+	    {
+	      System.out.println("Obtained new cowboy with id: " + cowboy.id);
+	      activeCowboyId = cowboy.id;
+	      activeCowboy = cowboy;
+	    }
+	    else
+	    {
+	      if(cowboy.id.equals(activeCowboyId))
+	      {
+		System.out.println("Setting active cowboy to: " + activeCowboyId);
+		activeCowboy = cowboy;
+	      }
+	    }
 	  }
         }
 
@@ -152,7 +206,7 @@ public class AI extends BaseAI
 
 	    activeC = new CowboyHelper(activeCowboy, new PianoGoal(piano));
 
-
+	    System.out.println("Cowboy: " + activeCowboy.id + " should be trying to go to : " + piano);
 	    activeC.Act(game);
 
 	    /*

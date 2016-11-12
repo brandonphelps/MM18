@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.HashMap;
 
-
 public class PathFinder
 {
   public static List<Tile> findPath(Tile start, Tile goal)
+  {
+    // no need to make a path to here...
+    if (start == goal)
     {
-      // no need to make a path to here...
-      if (start == goal)
-      {
-	return new ArrayList<Tile>();
-      }
+      return new ArrayList<Tile>();
+    }
 
-      // the tiles that will have their neighbors searched for 'goal'
+    // the tiles that will have their neighbors searched for 'goal'
       Queue<Tile> fringe = new LinkedList<Tile>();
 
       // How we got to each tile that went into the fringe.
