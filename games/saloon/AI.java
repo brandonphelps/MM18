@@ -34,7 +34,8 @@ public class AI extends BaseAI
      * This returns your AI's name to the game server. Just replace the string.
      * @return string of you AI's name
      */
-    public String getName() {
+    public String getName()
+    {
         return "Saloon Java Player"; // REPLACE THIS WITH YOUR TEAM NAME!
     }
 
@@ -42,7 +43,8 @@ public class AI extends BaseAI
      * This is automatically called when the game first starts, once the Game object and all GameObjects have been initialized, but before any players do anything.
      * This is a good place to initialize any variables you add to your AI, or start tracking game objects.
      */
-    public void start() {
+    public void start()
+    {
         super.start();
     }
 
@@ -50,7 +52,8 @@ public class AI extends BaseAI
      * This is automatically called every time the game (or anything in it) updates.
      * If a function you call triggers an update this will be called before that function returns.
      */
-    public void gameUpdated() {
+    public void gameUpdated()
+    {
         super.gameUpdated();
     }
 
@@ -60,7 +63,8 @@ public class AI extends BaseAI
      * @param  won  true if your player won, false otherwise
      * @param  name  reason">a string explaining why you won or lost
      */
-    public void ended(boolean won, String reason) {
+    public void ended(boolean won, String reason)
+    {
         super.ended(won, reason);
     }
 
@@ -89,6 +93,7 @@ public class AI extends BaseAI
         for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
+	  Goal g = new Goal();
 	  System.out.println("My Health: " + cowboy.health);
 	  // if this cowboy is not dead then make him our active cowboy we will try to control
 	  if(!cowboy.isDead)
