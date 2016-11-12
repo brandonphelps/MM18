@@ -110,7 +110,14 @@ public class AI extends BaseAI
 	for(int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
-	  cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(pianos.get(piano_index))));
+	  if(cowboysToHelpers.get(cowboy.id) != null)
+	  {
+	    cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(pianos.get(piano_index))));	    
+	  }
+	  else
+	  {
+	    cowboysToHelpers.get(cowboy.id).SetCowboy(cowboy);
+	  }
 	  piano_index += 1;
 	  if(piano_index >= pianos.size())
 	  {
