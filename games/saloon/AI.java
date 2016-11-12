@@ -84,14 +84,16 @@ public class AI extends BaseAI {
 
         // Find the active cowboy to try to do things with
         Cowboy activeCowboy = null;
-        for (int i = 0; i < this.player.cowboys.size(); i++) {
-            Cowboy cowboy = this.player.cowboys.get(i);
+        for (int i = 0; i < this.player.cowboys.size(); i++)
+	{
+	  Cowboy cowboy = this.player.cowboys.get(i);
 
-            // if this cowboy is not dead then make him our active cowboy we will try to control
-            if(!cowboy.isDead) {
-                activeCowboy = cowboy;
-                break;
-            }
+	  // if this cowboy is not dead then make him our active cowboy we will try to control
+	  if(!cowboy.isDead)
+	  {
+	    activeCowboy = cowboy;
+	    break;
+	  }
         }
 
         // A random generator we use to do random silly things
@@ -104,31 +106,37 @@ public class AI extends BaseAI {
 
         // Count cowboys with selected job
         int jobCount = 0;
-        for (int i = 0; i < this.player.cowboys.size(); i++) {
+        for (int i = 0; i < this.player.cowboys.size(); i++)
+	{
             Cowboy cowboy = this.player.cowboys.get(i);
 
-            if(!cowboy.isDead && cowboy.job.equals(newJob)) {
+            if(!cowboy.isDead && cowboy.job.equals(newJob))
+	    {
                 jobCount++;
             }
         }
 
         // Call in the new cowboy with that job if there aren't too many
         //   cowboys with that job already.
-        if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob) {
+        if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
+	{
             System.out.println("1. Calling in: " + newJob);
             this.player.youngGun.callIn(newJob);
         }
 
         // Now lets use him
-        if (activeCowboy != null) {
+        if (activeCowboy != null)
+	{
             // 2. Try to move to a piano.
 
             // Find a piano.
             Furnishing piano = null;
-            for (int i = 0; i < this.game.furnishings.size(); i++) {
+            for (int i = 0; i < this.game.furnishings.size(); i++)
+	    {
                 Furnishing furnishing = this.game.furnishings.get(i);
 
-                if (furnishing.isPiano && !furnishing.isDestroyed) {
+                if (furnishing.isPiano && !furnishing.isDestroyed)
+		{
                     piano = furnishing;
                     break;
                 }
@@ -136,7 +144,8 @@ public class AI extends BaseAI {
 
             // There will always be pianos or the game will end. No need to check for existence.
             // Attempt to move toward the piano by finding a path.
-            if (activeCowboy.canMove && !activeCowboy.isDead) {
+            if (activeCowboy.canMove && !activeCowboy.isDead)
+	    {
                 System.out.println("Trying to use Cowboy #" + activeCowboy.id);
 
                 // Find a path of tiles to the piano from our active cowboy's tile
@@ -209,9 +218,11 @@ public class AI extends BaseAI {
      * @param  goal  the goal Tile
      * @return A List of Tiles representing the path, the the first element being a valid adjacent Tile to the start, and the last element being the goal. Or an empty list if no path found.
      */
-    List<Tile> findPath(Tile start, Tile goal) {
+    List<Tile> findPath(Tile start, Tile goal)
+    {
         // no need to make a path to here...
-        if (start == goal) {
+        if (start == goal)
+	{
             return new ArrayList<Tile>();
         }
 
@@ -231,17 +242,20 @@ public class AI extends BaseAI {
 
             // cycle through the tile's neighbors.
             List<Tile> neighbors = inspect.getNeighbors();
-            for (int i = 0; i < neighbors.size(); i++) {
+            for (int i = 0; i < neighbors.size(); i++)
+	    {
                 Tile neighbor = neighbors.get(i);
 
                 // If we found the goal we've found the path!
-                if (neighbor == goal) {
+                if (neighbor == goal)
+		{
                     // Follow the path backward starting at the goal and return it.
                     List<Tile> path = new ArrayList<Tile>();
                     path.add(goal);
 
                     // Starting at the tile we are currently at, insert them retracing our steps till we get to the starting tile
-                    for (Tile step = inspect; step != start; step = cameFrom.get(step)) {
+                    for (Tile step = inspect; step != start; step = cameFrom.get(step))
+		    {
                         path.add(0, step);
                     }
 
