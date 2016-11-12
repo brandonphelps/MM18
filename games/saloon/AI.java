@@ -15,7 +15,8 @@ import joueur.BaseAI;
 /**
  * This is where you build your AI for the Saloon game.
  */
-public class AI extends BaseAI {
+public class AI extends BaseAI
+{
     /**
      * This is the Game object itself, it contains all the information about the current game
      */
@@ -69,7 +70,8 @@ public class AI extends BaseAI {
      *
      * @return Represents if you want to end your turn. True means end your turn, False means to keep your turn going and re-call this function.
      */
-    public boolean runTurn() {
+    public boolean runTurn()
+    {
         // This is "ShellAI", some basic code we've provided that does
         // everything in the game for demo purposed, but poorly so you
         // can get to optimizing or overwriting it ASAP
@@ -87,7 +89,7 @@ public class AI extends BaseAI {
         for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
 	  Cowboy cowboy = this.player.cowboys.get(i);
-
+	  System.out.println("My Health: " + cowboy.health);
 	  // if this cowboy is not dead then make him our active cowboy we will try to control
 	  if(!cowboy.isDead)
 	  {
@@ -176,31 +178,37 @@ public class AI extends BaseAI {
             }
 
             // 4. Try to act with active cowboy
-            if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0) {
+            if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0)
+	    {
                 // Get a random neighboring tile.
                 List<Tile> neighbors = activeCowboy.tile.getNeighbors();
                 Tile neighbor = neighbors.get(random.nextInt(neighbors.size()));
 
                 // Based on job, act accordingly.
-                if (activeCowboy.job.equals("Bartender")) {
+                if (activeCowboy.job.equals("Bartender"))
+		{
                     // Bartenders dispense brews freely, but they still manage to get their due.
                     String direction = Tile.DIRECTIONS[random.nextInt(Tile.DIRECTIONS.length)];
                     System.out.println("4. Bartender acting on Tile #" + neighbor.id + " with drunkDirection: " + direction);
                     activeCowboy.act(neighbor, direction);
                 }
-                else if (activeCowboy.job.equals("Brawler")) {
+                else if (activeCowboy.job.equals("Brawler"))
+		{
                     // Brawlers' brains are so pickled, they hardly know friend from foe.
                     // Probably don't ask them act on your behalf.
                     System.out.println("4. Brawlers cannot act");
                 }
-                else if (activeCowboy.job.equals("Sharpshooter")) {
+                else if (activeCowboy.job.equals("Sharpshooter"))
+		{
                     // Sharpshooters aren't as quick as they used to be, and all that ruckus around them
                     // requires them to focus when taking aim.
-                    if (activeCowboy.focus > 0) {
+                    if (activeCowboy.focus > 0)
+		    {
                         System.out.println("4. Sharpshooter acting on Tile #" + neighbor.id);
                         activeCowboy.act(neighbor);
                     }
-                    else {
+                    else
+		    {
                         System.out.println("4. Sharpshooter doesn't have enough focus. (focus == " + activeCowboy.focus + ")");
                     }
                 }
