@@ -4,8 +4,8 @@ package games.saloon;
 public class CowboyHelper
 {
   // the specific cowboy that the goal is assoiciated with
-  private Cowboy cowboy;
-  private Goal goal;
+  public Cowboy cowboy;
+  public Goal goal;
 
   public CowboyHelper(Cowboy c, Goal g)
   {
