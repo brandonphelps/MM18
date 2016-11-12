@@ -92,13 +92,30 @@ public class AI extends BaseAI
         System.out.println("Start of my turn: " + this.game.currentTurn);
 
 
-	
+	// get list of pianos
+	List<Furnishing> pianos = new ArrayList<Furnishing>();
 
+	for (int i = 0; i < this.game.furnishings.size(); i++)
+	{
+	  Furnishing furnishing = this.game.furnishings.get(i);
 
+	  if (furnishing.isPiano && !furnishing.isDestroyed)
+	  {
+	    pianos.add(furnishing);
+	  }
+	}
+
+	// setup goals for each cowboy
+	int piano_index = 0;
 	for(int i = 0; i < this.player.cowboys.size(); i++)
 	{
-	  Cowboy cowboy = this.player.cowboys.get(i); 
-	  //cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(
+	  Cowboy cowboy = this.player.cowboys.get(i);
+	  cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(pianos.get(piano_index))));
+	  piano_index += 1;
+	  if(piano_index >= pianos.size())
+	  {
+	    piano_index = 0;
+	  }
 	}
 
         // Find the active cowboy to try to do things with
@@ -186,30 +203,16 @@ public class AI extends BaseAI
             this.player.youngGun.callIn(newJob);
         }
 
+	for (CowboyHelper cowboyHelper : cowboysToHelpers.values())
+	{
+	  cowboyHelper.Act(game);
+	}
+
+	/*
         // Now lets use him
         if (activeCowboy != null)
 	{
-            // 2. Try to move to a piano.
 
-            // Find a piano.
-            Furnishing piano = null;
-            for (int i = 0; i < this.game.furnishings.size(); i++)
-	    {
-                Furnishing furnishing = this.game.furnishings.get(i);
-
-                if (furnishing.isPiano && !furnishing.isDestroyed)
-		{
-                    piano = furnishing;
-		    break;
-                }
-            }
-
-	    activeC = new CowboyHelper(activeCowboy, new PianoGoal(piano));
-
-	    System.out.println("Cowboy: " + activeCowboy.id + " should be trying to go to : " + piano);
-	    activeC.Act(game);
-
-	    /*
             // 4. Try to act with active cowboy
             if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0)
 	    {
@@ -246,8 +249,9 @@ public class AI extends BaseAI
                     }
                 }
             }
-	    */
         }
+	*/
+
 
         System.out.println("Ending my turn.");
 
