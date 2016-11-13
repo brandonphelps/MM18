@@ -310,7 +310,7 @@ public class AI extends BaseAI
 	if(this.player.youngGun.canCallIn)
 	{
 		//Make sure we don't have one of our cowboys here
-		if(!(this.player.youngGun.callInTile.cowboy && this.player.youngGun.callInTile.cowboy.owner == _game.currentPlayer))
+		if(!((this.player.youngGun.callInTile.cowboy != null) && (this.player.youngGun.callInTile.cowboy.owner == game.currentPlayer)))
 		{
 			//Spawn a cowboy with a random job
 			boolean newJobMade = false;
@@ -318,7 +318,7 @@ public class AI extends BaseAI
 
 			while(newJobMade == false && tryCount < 20)
 			{
-				tryCount++
+				tryCount++;
 
 				// Count cowboys with selected job
 				int jobCount = 0;
