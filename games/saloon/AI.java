@@ -162,6 +162,7 @@ public class AI extends BaseAI
 		}
 
 		List<Cowboy> joblessBrawlers = new ArrayList<Cowboy>();
+
 		
 		for(int i = 0; i < joblessCowboys.size(); i++)
 		{
@@ -170,6 +171,9 @@ public class AI extends BaseAI
 		    joblessBrawlers.add(joblessCowboys.get(i));
 		  }
 		}
+
+		System.out.println("I have: " + joblessBrawlers.size() + " brawlwers");
+
 
 		while(joblessBrawlers.size() > 0)
 		{
@@ -199,9 +203,11 @@ public class AI extends BaseAI
 		  }
 		  //joblessCowboys.get(myCowboyIndex).log("Attacking...");
 
-		  cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(myCowboyIndex), new AttackGoal(game, game.cowboys.get(targetCowboyIndex).id)));
+		  System.out.println("Attempting to add : " + myCowboyIndex + " to the helper");
 
-		  joblessCowboys.remove(myCowboyIndex);
+		  cowboysWithJobs.add(new CowboyHelper(joblessBrawlers.get(myCowboyIndex), new AttackGoal(game, game.cowboys.get(targetCowboyIndex).id)));
+
+		  joblessBrawlers.remove(myCowboyIndex);
 		}
 
 		//for(Furnishing piano: goallessPianos)
