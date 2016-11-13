@@ -3,10 +3,10 @@ package games.saloon;
 
 public class DangerAvoidance
 {
-	static int brawlerDangerValue = 20;
-	static int brawlerDangerDropoff = 5;
+	static int brawlerDangerValue = 20;  // Defines maximum danger value for this thing. (brawler in this instance)
+	static int brawlerDangerDropoff = 5;  // Defines danger value dropped per manhattan distance.
 
-	static int glassDangerValue = 20;
+	static int glassDangerValue = 40;
 
 	static int bottleDangerValue = 100;
 	static int bottleDangerDropoff = 20;
@@ -20,11 +20,52 @@ public class DangerAvoidance
 	static int youngGunDangerValue = 60;
 	static int youngGunDropoff = 20;
 
+	//Defines how much better another path must be to take it over our original path.
+	static int dangerDiffBeforeWeChangeRoute = 20;
+
+
+
+	public static void avoidDangerAndMove(Game game, Cowboy cowboy, Tile moveTile)
+	{
+		//Calculate danger level of the tile we want to move to.
+		int moveTileDanger = DangerAvoidance.CalculateTileDanger(game, moveTile, cowboy);
+		Tile alternateTileA, alternateTileB;
+
+		//Figure out which way to avoid.
+		if(moveTile == cowboy.tile.tileNorth || moveTile == cowboy.tile.tileSouth)
+		{
+		  //We are moving on the y axis. alternate tiles are on either side on x axis.
+		  alternateTileB = cowboy.tile.tileWest;
+		  alternateTileA = cowboy.tile.tileEast;
+		}
+		else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
+		{
+		  alternateTileA = cowboy.tile.tileNorth;
+		  alternateTileB = cowboy.tile.tileSouth;
+		}
+		else
+		{
+		  System.out.println("Error finding alternate route.");
+		  alternateTileA = moveTile;
+		  alternateTileB = moveTile;
+		}
+		//Find min danger and go there.
+		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
+		int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
+		if(alternateADanger != 0 && ((alternateADanger+dangerDiffBeforeWeChangeRoute) < moveTileDanger && alternateADanger < alternateBDanger))
+		{
+			moveTile = alternateTileA;
+		} else if(alternateBDanger != 0 && ((alternateBDanger+dangerDiffBeforeWeChangeRoute < moveTileDanger) && alternateBDanger < alternateADanger))
+		{
+			moveTile = alternateTileB;
+		}
+	}
+
 
 
 	//returns null if the tile is not a valid location.
 	//Returns a number between 0 and 100. 100 is very dangerous.
-	static Integer CalculateTileDanger(Game game, Tile tile, CowboyHelper cowboyH)
+        public static Integer CalculateTileDanger(Game game, Tile tile, Cowboy cowboy)
 	{
 		Integer dangerValue = 0;
 
@@ -32,7 +73,7 @@ public class DangerAvoidance
 		//Make sure this is a valid place to be.
 		if(tile.isPathable() == false)
 		{
-			return null;
+			return 1000;
 		}
 
 		//Calculate glass danger
@@ -60,7 +101,7 @@ public class DangerAvoidance
 		//Calculate danger to other people
 		for(Cowboy c: game.cowboys)
 		{
-			if(!c.isDead)
+			if(!c.isDead && c != cowboy)
 			{
 				//All brawlers are dangerous.
 				if(c.job == Constants.BRAWLER)//TODO: maybe treat our brawlers differently if we know their path.
@@ -134,7 +175,7 @@ public class DangerAvoidance
 
 
 
-	static java.util.ArrayList<Tile> GetBottlePath(Bottle b)
+	public static java.util.ArrayList<Tile> GetBottlePath(Bottle b)
 	{
 		java.util.ArrayList<Tile> bottlePath = new java.util.ArrayList<Tile>();
 
@@ -167,12 +208,12 @@ public class DangerAvoidance
 		return bottlePath;
 	}
 
-	static int ManhattanDistance(Tile from, Tile to)
+	public static int ManhattanDistance(Tile from, Tile to)
 	{
 		return Math.abs((to.x - from.x) + (to.y - from.y));
 	}
 
-	static int ThingsDangerToTile(int distanceToTile, int dangerValue, int dangerDropoff)
+	public static int ThingsDangerToTile(int distanceToTile, int dangerValue, int dangerDropoff)
 	{
 		int retVal = dangerValue - (distanceToTile-1)*dangerDropoff;
 		retVal = retVal < 0? 0: retVal;
