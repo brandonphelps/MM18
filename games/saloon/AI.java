@@ -122,6 +122,16 @@ public class AI extends BaseAI
 	}
       }
 
+      if(joblessCowboys.size() <= cowboyIndex)
+      {
+	System.out.println("I ran out of cowboys");
+      }
+
+      if(goallessPianos.size() <= pianoIndex)
+      {
+	System.out.println("I ran out of pianos");
+      }
+      
       cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
 
       joblessCowboys.remove(cowboyIndex);
