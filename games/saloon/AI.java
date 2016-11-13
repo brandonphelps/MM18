@@ -304,10 +304,6 @@ public class AI extends BaseAI
 		// A random generator we use to do random silly things
 	Random random = new Random();
 
-	// 1. Try to spawn a cowboy.
-
-	// Randomly select a job.
-	String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
 
 
 
@@ -322,6 +318,7 @@ public class AI extends BaseAI
 		cowboyHelper.Act();
 	}
 
+	// 1. Try to spawn a cowboy.
 	//Spawn a new cowboy if we can safely do it.
 	if(this.player.youngGun.canCallIn)
 	{
@@ -338,6 +335,11 @@ public class AI extends BaseAI
 				while(newJobMade == false && tryCount < 20)
 				{
 					tryCount++;
+
+					
+
+					// Randomly select a job.
+					String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
 
 					// Count cowboys with selected job
 					int jobCount = 0;
