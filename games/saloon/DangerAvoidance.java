@@ -3,8 +3,8 @@ package games.saloon;
 
 public class DangerAvoidance
 {
-	static int brawlerDangerValue = 20;
-	static int brawlerDangerDropoff = 5;
+	static int brawlerDangerValue = 20;  // Defines maximum danger value for this thing. (brawler in this instance)
+	static int brawlerDangerDropoff = 5;  // Defines danger value dropped per manhattan distance.
 
 	static int glassDangerValue = 40;
 
@@ -20,12 +20,18 @@ public class DangerAvoidance
 	static int youngGunDangerValue = 60;
 	static int youngGunDropoff = 20;
 
+	//Defines how much better another path must be to take it over our original path.
+	static int dangerDiffBeforeWeChangeRoute = 20;
+
 
 
 	public static void avoidDangerAndMove(Game game, Cowboy cowboy, Tile moveTile)
 	{
+		//Calculate danger level of the tile we want to move to.
 		int moveTileDanger = DangerAvoidance.CalculateTileDanger(game, moveTile, cowboy);
 		Tile alternateTileA, alternateTileB;
+
+		//Figure out which way to avoid.
 		if(moveTile == cowboy.tile.tileNorth || moveTile == cowboy.tile.tileSouth)
 		{
 		  //We are moving on the y axis. alternate tiles are on either side on x axis.
@@ -34,7 +40,7 @@ public class DangerAvoidance
 		}
 		else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
 		{
-		  alternateTileA = cowboy.tile.tileNorth;///////////TODO: OPTIMIZE THIS!
+		  alternateTileA = cowboy.tile.tileNorth;
 		  alternateTileB = cowboy.tile.tileSouth;
 		}
 		else
@@ -43,39 +49,15 @@ public class DangerAvoidance
 		  alternateTileA = moveTile;
 		  alternateTileB = moveTile;
 		}
-
-
-		System.out.println("AlternateB: " + alternateTileB);
-		System.out.println("Game: " + game);
-		System.out.println("Cowboy: " + cowboy);
-
-		if(!alternateTileA.isPathable())
-		{
-		  System.out.println("AlternateA: " + alternateTileA + " is not pathable");
-		}
-
-		if(!alternateTileB.isPathable())
-		{
-		  System.out.println("AlternateB: " + alternateTileB + " is not pathable");
-		}
-
-		
-
-		//Find min danger.
+		//Find min danger and go there.
 		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
 		int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
-
-		//int alternateADanger = 10;
-		//int alternateBDanger = 2;
-		
-		int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
-		if(minDanger == alternateADanger)
+		if(alternateADanger != 0 && ((alternateADanger+dangerDiffBeforeWeChangeRoute) < moveTileDanger && alternateADanger < alternateBDanger))
 		{
-		  moveTile = alternateTileA;
-		}
-		else if(minDanger == alternateBDanger)
+			moveTile = alternateTileA;
+		} else if(alternateBDanger != 0 && ((alternateBDanger+dangerDiffBeforeWeChangeRoute < moveTileDanger) && alternateBDanger < alternateADanger))
 		{
-		  moveTile = alternateTileB;
+			moveTile = alternateTileB;
 		}
 	}
 
