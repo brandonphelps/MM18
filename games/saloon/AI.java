@@ -293,17 +293,6 @@ public class AI extends BaseAI
 	// Randomly select a job.
 	String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
 
-	// Count cowboys with selected job
-	int jobCount = 0;
-	for (int i = 0; i < this.player.cowboys.size(); i++)
-	{
-		Cowboy cowboy = this.player.cowboys.get(i);
-
-		if(!cowboy.isDead && cowboy.job.equals(newJob))
-		{
-			jobCount++;
-		}
-	}
 
 
 	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
@@ -317,12 +306,47 @@ public class AI extends BaseAI
 		cowboyHelper.Act();
 	}
 
-	// Call in the new cowboy with that job if there aren't too many
-	//   cowboys with that job already.
-	if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
+	//Spawn a new cowboy if we can safely do it.
+	if(this.player.youngGun.canCallIn)
 	{
-		this.player.youngGun.callIn(newJob);
+		//Make sure we don't have one of our cowboys here
+		if(!(this.player.youngGun.callInTile.cowboy && this.player.youngGun.callInTile.cowboy.owner == _game.currentPlayer))
+		{
+			//Spawn a cowboy with a random job
+			boolean newJobMade = false;
+			int tryCount = 0;
+
+			while(newJobMade == false && tryCount < 20)
+			{
+				tryCount++
+
+				// Count cowboys with selected job
+				int jobCount = 0;
+				for (int i = 0; i < this.player.cowboys.size(); i++)
+				{
+					Cowboy cowboy = this.player.cowboys.get(i);
+
+					if(!cowboy.isDead && cowboy.job.equals(newJob))
+					{
+						jobCount++;
+					}
+				}
+
+				// Call in the new cowboy with that job if there aren't too many
+				//   cowboys with that job already.
+				if (jobCount < this.game.maxCowboysPerJob)
+				{
+					newJobMade = true;
+					this.player.youngGun.callIn(newJob);
+				}
+			}
+		}
 	}
+
+
+
+
+
 
 		System.out.println("Ending my turn.");
 
