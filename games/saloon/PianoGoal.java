@@ -121,7 +121,7 @@ public class PianoGoal extends Goal
 
 	  boolean shoot = true;
 
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.North, cowboy.focus))
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.NORTH, cowboy.focus))
 	  {
 	    if(tile.cowboy.owner.equals(game.currentPlayer))
 	    {
@@ -132,11 +132,11 @@ public class PianoGoal extends Goal
 
 	  if(shoot)
 	  {
-	    shootDirection = Constants.North;
+	    shootDirection = Constants.NORTH;
 	  }
 
 	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.South, cowboy.focus))
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.SOUTH, cowboy.focus))
 	  {
 	    if(tile.cowboy.owner.equals(game.currentPlayer))
 	    {
@@ -147,11 +147,11 @@ public class PianoGoal extends Goal
 
 	  if(shoot)
 	  {
-	    shootDirection = Constants.South;
+	    shootDirection = Constants.SOUTH;
 	  }
 
 	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.East, cowboy.focus))
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.EAST, cowboy.focus))
 	  {
 	    if(tile.cowboy.owner.equals(game.currentPlayer))
 	    {
@@ -162,11 +162,11 @@ public class PianoGoal extends Goal
 
 	  if(shoot)
 	  {
-	    shootDirection = Constants.East;
+	    shootDirection = Constants.EAST;
 	  }
 
 	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.West, cowboy.focus))
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.WEST, cowboy.focus))
 	  {
 	    if(tile.cowboy.owner.equals(game.currentPlayer))
 	    {
@@ -177,7 +177,7 @@ public class PianoGoal extends Goal
 
 	  if(shoot)
 	  {
-	    shootDirection = Constants.West;
+	    shootDirection = Constants.WEST;
 	  }
 
 	  
