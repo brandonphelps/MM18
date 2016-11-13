@@ -66,12 +66,55 @@ public class PianoGoal extends Goal
       if(cowboy.canMove && !cowboy.isDead)
       {
         // Find a path of tiles to the piano from our active cowboy's tile
-        List<Tile> path = PathFinder.findPath(cowboy.tile, piano.tile);
+        Tile targetPianoTile;
+        Tile closestPianoTile = null;
+        int closestPianoTileDistance = 999;
+        Tile closestSafePianoTile = null;
+        int closestSafePianoTileDistance = 999;
+        for(Tile t: piano.tile.getNeighbors())
+        {
+          //See if this tile is closer than the others
+          int tileDistance = DangerAvoidance.ManhattanDistance(cowboy.tile, t);
+          if(t.isPathable())
+          {
+            if(tileDistance < closestPianoTileDistance)
+            {
+              //This tile is the closest so far
+              closestPianoTile = t;
+              closestPianoTileDistance = tileDistance;
+            }
+            if(!t.hasHazard && tileDistance < closestSafePianoTileDistance)
+            {
+              closestSafePianoTileDistance = tileDistance;
+              closestSafePianoTile = t;
+            }
+          }
+        }
+
+        if(closestSafePianoTile == null)
+        {
+          System.out.println("no safe piano tile found.");
+          if(closestPianoTile == null)
+          {
+            System.out.println("ERROR! UNABLE TO FIND A TILE TO PLAY PIANO");
+            targetPianoTile = piano.tile;
+          } else
+          {
+            //We couldn't find a safe piano tile. Go to the closest piano tile.
+            targetPianoTile = closestPianoTile;
+          }
+        } else
+        {
+          //We found a safe tile to go to.
+          targetPianoTile = closestSafePianoTile;
+        }
+
+        List<Tile> path = PathFinder.findPath(cowboy.tile, targetPianoTile);
 
         // if there is a path, move along it
         //      length 0 means no path could be found to the tile
         //      length 1 means the piano is adjacent, and we can't move onto the same tile as the piano
-        if(path.size() > 1)
+        if(path.size() > 0)
         {
           Tile moveTile = path.get(0);
 

@@ -304,10 +304,6 @@ public class AI extends BaseAI
 		// A random generator we use to do random silly things
 	Random random = new Random();
 
-	// 1. Try to spawn a cowboy.
-
-	// Randomly select a job.
-	String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
 
 
 
@@ -322,38 +318,48 @@ public class AI extends BaseAI
 		cowboyHelper.Act();
 	}
 
+	// 1. Try to spawn a cowboy.
 	//Spawn a new cowboy if we can safely do it.
 	if(this.player.youngGun.canCallIn)
 	{
 		//Make sure we don't have one of our cowboys here
 		if(!((this.player.youngGun.callInTile.cowboy != null) && (this.player.youngGun.callInTile.cowboy.owner == game.currentPlayer)))
 		{
-			//Spawn a cowboy with a random job
-			boolean newJobMade = false;
-			int tryCount = 0;
-
-			while(newJobMade == false && tryCount < 20)
+			//Make sure this tile doesn't have a piano
+			if(this.player.youngGun.callInTile.furnishing.isPiano == false)
 			{
-				tryCount++;
+				//Spawn a cowboy with a random job
+				boolean newJobMade = false;
+				int tryCount = 0;
 
-				// Count cowboys with selected job
-				int jobCount = 0;
-				for (int i = 0; i < this.player.cowboys.size(); i++)
+				while(newJobMade == false && tryCount < 20)
 				{
-					Cowboy cowboy = this.player.cowboys.get(i);
+					tryCount++;
 
-					if(!cowboy.isDead && cowboy.job.equals(newJob))
+					
+
+					// Randomly select a job.
+					String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
+
+					// Count cowboys with selected job
+					int jobCount = 0;
+					for (int i = 0; i < this.player.cowboys.size(); i++)
 					{
-						jobCount++;
-					}
-				}
+						Cowboy cowboy = this.player.cowboys.get(i);
 
-				// Call in the new cowboy with that job if there aren't too many
-				//   cowboys with that job already.
-				if (jobCount < this.game.maxCowboysPerJob)
-				{
-					newJobMade = true;
-					this.player.youngGun.callIn(newJob);
+						if(!cowboy.isDead && cowboy.job.equals(newJob))
+						{
+							jobCount++;
+						}
+					}
+
+					// Call in the new cowboy with that job if there aren't too many
+					//   cowboys with that job already.
+					if (jobCount < this.game.maxCowboysPerJob)
+					{
+						newJobMade = true;
+						this.player.youngGun.callIn(newJob);
+					}
 				}
 			}
 		}
