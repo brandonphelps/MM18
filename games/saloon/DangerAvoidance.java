@@ -6,7 +6,7 @@ public class DangerAvoidance
 	static int brawlerDangerValue = 20;  // Defines maximum danger value for this thing. (brawler in this instance)
 	static int brawlerDangerDropoff = 5;  // Defines danger value dropped per manhattan distance.
 
-	static int glassDangerValue = 40;
+	static int glassDangerValue = 10;
 
 	static int bottleDangerValue = 100;
 	static int bottleDangerDropoff = 20;
