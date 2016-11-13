@@ -6,7 +6,7 @@ public class DangerAvoidance
 	static int brawlerDangerValue = 20;
 	static int brawlerDangerDropoff = 5;
 
-	static int glassDangerValue = 20;
+	static int glassDangerValue = 40;
 
 	static int bottleDangerValue = 100;
 	static int bottleDangerDropoff = 20;

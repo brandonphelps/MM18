@@ -69,9 +69,9 @@ public class PianoGoal extends Goal
         if(path.size() > 1)
         {
           Tile moveTile = path.get(0);
-          int moveTileDanger = DangerAvoidance.CalculateTileDanger(game, moveTile, cowboy);
+          int moveTileDanger = DangerAvoidance.CalculateTileDanger(_game, moveTile, cowboy);
 
-          if(moveTileDanger > Constants.MEDIUM_DANGER_THRESHOLD)
+          if(moveTileDanger >= Constants.MEDIUM_DANGER_THRESHOLD)
           {
             //We are in some danger. See if other places are safer.
             int targetXCoord = this.TargetTile().x;
@@ -94,10 +94,10 @@ public class PianoGoal extends Goal
             }
 
             //Find min danger.
-            int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
-            int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
+            int alternateADanger = DangerAvoidance.CalculateTileDanger(_game, alternateTileA, cowboy);
+            int alternateBDanger = DangerAvoidance.CalculateTileDanger(_game, alternateTileB, cowboy);
 
-            int minDanger = Math.min(moveTileDanger, alternateADanger, alternateBDanger);
+            int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
             if(minDanger == alternateADanger)
             {
               moveTile = alternateTileA;
