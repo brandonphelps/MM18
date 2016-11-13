@@ -148,21 +148,29 @@ public class AI extends BaseAI
 			}
 			
 			
+			
 			//joblessCowboys.get(cowboyIndex).log(goallessPianos.get(pianoIndex).id);
 			//goallessPianos.get(pianoIndex).log(goallessPianos.get(pianoIndex).id);
 			
+			PianoGoal pg = new PianoGoal(game, goallessPianos.get(pianoIndex).id);
+			CowboyHelper newHelper = new CowboyHelper(joblessCowboys.get(cowboyIndex), pg);
+			cowboysWithJobs.add(newHelper);
+				
+			long qualification = Math.round(100.0f * pg.Qualification(newHelper.cowboy));
 			
-			cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
+			String cowboyinfo = goallessPianos.get(pianoIndex).id + "\n" + qualification;
+			newHelper.cowboy.log(cowboyinfo);
+			goallessPianos.get(pianoIndex).log(goallessPianos.get(pianoIndex).id);
 
 			joblessCowboys.remove(cowboyIndex);
 			goallessPianos.remove(pianoIndex);
 		}
 
-		//for(Furnishing piano: goallessPianos)
-		//piano.log("X");
+		for(Furnishing piano: goallessPianos)
+		piano.log("X");
             
-		//for(Cowboy cowboy: joblessCowboys)
-		//cowboy.log("X");
+		for(Cowboy cowboy: joblessCowboys)
+		cowboy.log("X");
             
 
 		return cowboysWithJobs;
