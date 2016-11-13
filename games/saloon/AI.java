@@ -139,7 +139,7 @@ public class AI extends BaseAI
 				}
 				
 				//System.out.println(heatmap.toString());
-				
+  				
 			}
 			
 			
@@ -161,7 +161,17 @@ public class AI extends BaseAI
 			goallessPianos.remove(pianoIndex);
 		}
 
-		while(joblessCowboys.size() > 0)
+		List<Cowboy> joblessBrawlers = new ArrayList<Cowboy>();
+		
+		for(int i = 0; i < joblessCowboys.size(); i++)
+		{
+		  if(joblessCowboys.get(i).job.equals("Brawler"))
+		  {
+		    joblessBrawlers.add(joblessCowboys.get(i));
+		  }
+		}
+
+		while(joblessBrawlers.size() > 0)
 		{
 		  double MaxQualification = 0;
 		  int myCowboyIndex = 0;
@@ -174,7 +184,7 @@ public class AI extends BaseAI
 		    {
 		      AttackGoal a = new AttackGoal(game, game.cowboys.get(i).id);
 		      // iterate over our cowboys that do not have jobs
-		      for(int j = 0; j < joblessCowboys.size(); j++)
+		      for(int j = 0; j < joblessBrawler.size(); j++)
 		      {
 			double temp = a.Qualification(joblessCowboys.get(j));
 
