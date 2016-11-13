@@ -21,7 +21,7 @@ public class DangerAvoidance
 	static int youngGunDropoff = 20;
 
 	//Defines how much better another path must be to take it over our original path.
-	static int dangerDiffBeforeWeChangeRoute = 20;
+	static int dangerDiffBeforeWeChangeRoute = 40;
 
 
 
