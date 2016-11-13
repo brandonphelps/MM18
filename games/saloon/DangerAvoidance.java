@@ -59,6 +59,7 @@ public class DangerAvoidance
 		  System.out.println("AlternateB: " + alternateTileB + " is not pathable");
 		}
 
+		
 
 		//Find min danger.
 		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
