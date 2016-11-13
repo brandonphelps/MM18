@@ -11,4 +11,6 @@ public class Constants
 	static final String BRAWLER = "Brawler";
 	static final String BARTENDER = "Bartender";
 
+	static final MEDIUM_DANGER_THRESHOLD = 50;  // Defines minimum danger before we consider using a different path.
+
 }

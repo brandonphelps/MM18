@@ -24,7 +24,7 @@ public class DangerAvoidance
 
 	//returns null if the tile is not a valid location.
 	//Returns a number between 0 and 100. 100 is very dangerous.
-	static Integer CalculateTileDanger(Game game, Tile tile, CowboyHelper cowboyH)
+	static Integer CalculateTileDanger(Game game, Tile tile, Cowboy cowboy)
 	{
 		Integer dangerValue = 0;
 
@@ -60,7 +60,7 @@ public class DangerAvoidance
 		//Calculate danger to other people
 		for(Cowboy c: game.cowboys)
 		{
-			if(!c.isDead)
+			if(!c.isDead && c != cowboy)
 			{
 				//All brawlers are dangerous.
 				if(c.job == Constants.BRAWLER)//TODO: maybe treat our brawlers differently if we know their path.
