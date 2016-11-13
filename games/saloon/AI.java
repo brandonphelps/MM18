@@ -110,6 +110,7 @@ public class AI extends BaseAI
 
 			for(int i = 0; i < goallessPianos.size(); i++)
 			{
+			  System.out.println("Checking piano: " + goallessPianos.get(i).id);
 				PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
 				
 				Furnishing piano = p.findPiano();
@@ -117,10 +118,8 @@ public class AI extends BaseAI
 				HeatMap heatmap = new HeatMap();
 				
 				
-				System.out.println("PIANO AT " + piano.tile.x + ", " + piano.tile.y);
-				heatmap.SetValue(piano.tile.x, piano.tile.y, 99);
-				
-
+				//System.out.println("PIANO AT " + piano.tile.x + ", " + piano.tile.y);
+				//heatmap.SetValue(piano.tile.x, piano.tile.y, 99);
 				
 				for(int j = 0; j < joblessCowboys.size(); j++)
 				{
@@ -132,8 +131,8 @@ public class AI extends BaseAI
 					}
 					else
 					{
-                        System.out.println("QUAL VAL: " + temp);
-					    heatmap.SetValue(joblessCowboys.get(j).tile.x, joblessCowboys.get(j).tile.y, temp);
+					  System.out.println("QUAL VAL: " + temp);
+					  //heatmap.SetValue(joblessCowboys.get(j).tile.x, joblessCowboys.get(j).tile.y, temp);
 					}
 					
 					if(MaxQualification < temp)
@@ -144,24 +143,13 @@ public class AI extends BaseAI
 					}
 				}
 				
-				System.out.println(heatmap.toString());
+				//System.out.println(heatmap.toString());
 				
 			}
-
-			if(joblessCowboys.size() <= cowboyIndex)
-			{
-				System.out.println("I ran out of cowboys");
-				System.out.println("CowboyIndex: " + cowboyIndex);
-			}
-
-			if(goallessPianos.size() <= pianoIndex)
-			{
-				System.out.println("I ran out of pianos");
-			}
 			
 			
-			joblessCowboys.get(cowboyIndex).log(Integer.toString(pianoIndex));
-			goallessPianos.get(pianoIndex).log(Integer.toString(pianoIndex));
+			joblessCowboys.get(cowboyIndex).log(goallessPianos.get(pianoIndex).id);
+			goallessPianos.get(pianoIndex).log(goallessPianos.get(pianoIndex).id);
 			
 			
 			cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
