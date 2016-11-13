@@ -68,79 +68,79 @@ public class AI extends BaseAI
 		super.ended(won, reason);
 	}
 
-  public String activeCowboyId = null;
+	public String activeCowboyId = null;
 
-  public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
+	public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
 
-  public HashMap<String, Boolean> pianoHasGoals = new HashMap<String, Boolean>();
+	public HashMap<String, Boolean> pianoHasGoals = new HashMap<String, Boolean>();
 
-  public List<CowboyHelper> GeneratePianoGoals()
-  {
-	List<CowboyHelper> cowboysWithJobs = new ArrayList<CowboyHelper>();
-
-	List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
-
-	for(int i = 0; i < this.player.cowboys.size(); i++)
+	public List<CowboyHelper> GeneratePianoGoals()
 	{
-	  Cowboy cowboy = this.player.cowboys.get(i);
-	  joblessCowboys.add(cowboy);
+		List<CowboyHelper> cowboysWithJobs = new ArrayList<CowboyHelper>();
+
+		List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
+
+		for(int i = 0; i < this.player.cowboys.size(); i++)
+		{
+			Cowboy cowboy = this.player.cowboys.get(i);
+			joblessCowboys.add(cowboy);
+		}
+
+		List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
+
+		for (int i = 0; i < this.game.furnishings.size(); i++)
+		{
+			Furnishing furnishing = this.game.furnishings.get(i);
+
+			if (furnishing.isPiano && !furnishing.isDestroyed)
+			{
+	 
+				goallessPianos.add(furnishing);
+			}
+		}
+
+
+
+		while(joblessCowboys.size() > 0 || goallessPianos.size() > 0)
+		{
+			double MaxQualification = 0;
+			int pianoIndex = 0;
+			int cowboyIndex = 0;
+
+			for(int i = 0; i < goallessPianos.size(); i++)
+			{
+				for(int j = 0; j < joblessCowboys.size(); j++)
+				{
+					PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
+					double temp = p.Qualification(joblessCowboys.get(j));
+					if(MaxQualification < temp)
+					{
+						MaxQualification = temp;
+						pianoIndex = i;
+						cowboyIndex = j;
+					}
+				}
+			}
+
+			if(joblessCowboys.size() <= cowboyIndex)
+			{
+				System.out.println("I ran out of cowboys");
+			}
+
+			if(goallessPianos.size() <= pianoIndex)
+			{
+				System.out.println("I ran out of pianos");
+			}
+			
+			cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
+
+			joblessCowboys.remove(cowboyIndex);
+			goallessPianos.remove(pianoIndex);
+		}
+
+		return cowboysWithJobs;
 	}
-
-	List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
-
-	for (int i = 0; i < this.game.furnishings.size(); i++)
-	{
-	  Furnishing furnishing = this.game.furnishings.get(i);
-
-	  if (furnishing.isPiano && !furnishing.isDestroyed)
-	  {
- 
-	goallessPianos.add(furnishing);
-	  }
-	}
-
-
-
-	while(joblessCowboys.size() > 0 || goallessPianos.size() > 0)
-	{
-	  double MaxQualification = 0;
-	  int pianoIndex = 0;
-	  int cowboyIndex = 0;
-
-	  for(int i = 0; i < goallessPianos.size(); i++)
-	  {
-	for(int j = 0; j < joblessCowboys.size(); j++)
-	{
-	  PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
-	  double temp = p.Qualification(joblessCowboys.get(j));
-	  if(MaxQualification < temp)
-	  {
-		MaxQualification = temp;
-		pianoIndex = i;
-		cowboyIndex = j;
-	  }
-	}
-	  }
-
-	  if(joblessCowboys.size() <= cowboyIndex)
-	  {
-	System.out.println("I ran out of cowboys");
-	  }
-
-	  if(goallessPianos.size() <= pianoIndex)
-	  {
-	System.out.println("I ran out of pianos");
-	  }
-	  
-	  cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
-
-	  joblessCowboys.remove(cowboyIndex);
-	  goallessPianos.remove(pianoIndex);
-	}
-
-	return cowboysWithJobs;
-  }
-  
+	
 
 	/**
 	 * This is called every time it is this AI.player's turn.
@@ -172,76 +172,76 @@ public class AI extends BaseAI
 
 	for (int i = 0; i < this.game.furnishings.size(); i++)
 	{
-	  Furnishing furnishing = this.game.furnishings.get(i);
+		Furnishing furnishing = this.game.furnishings.get(i);
 
-	  if (furnishing.isPiano && !furnishing.isDestroyed)
-	  {
+		if (furnishing.isPiano && !furnishing.isDestroyed)
+		{
  
-		pianos.add(furnishing);
-	  }
+			pianos.add(furnishing);
+		}
 	}
 
 	// setup goals for each cowboy
 	int piano_index = 0;
 	for(int i = 0; i < this.player.cowboys.size(); i++)
 	{
-	  Cowboy cowboy = this.player.cowboys.get(i);
-	  if(cowboysToHelpers.get(cowboy.id) != null)
-	  {
-		if(cowboysToHelpers.get(cowboy.id).goal.IsFinished)
+		Cowboy cowboy = this.player.cowboys.get(i);
+		if(cowboysToHelpers.get(cowboy.id) != null)
 		{
-		  cowboysToHelpers.get(cowboy.id).goal = new PianoGoal(game, pianos.get(piano_index).id);
+			if(cowboysToHelpers.get(cowboy.id).goal.IsFinished)
+			{
+				cowboysToHelpers.get(cowboy.id).goal = new PianoGoal(game, pianos.get(piano_index).id);
+			}
+			cowboysToHelpers.get(cowboy.id).SetCowboy(cowboy);
 		}
-		cowboysToHelpers.get(cowboy.id).SetCowboy(cowboy);
-	  }
-	  else
-	  {
-		cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(game, pianos.get(piano_index).id)));
-	  }
-	  piano_index += 1;
-	  if(piano_index >= pianos.size())
-	  {
-		piano_index = 0;
-	  }
+		else
+		{
+			cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(game, pianos.get(piano_index).id)));
+		}
+		piano_index += 1;
+		if(piano_index >= pianos.size())
+		{
+			piano_index = 0;
+		}
 	}
 
 	for (Map.Entry<String, CowboyHelper> entry : cowboysToHelpers.entrySet())
 	{
-	  String key = entry.getKey();
-	  CowboyHelper value = entry.getValue();
-	  System.out.println("Cowboy id: " + key + " has goal " + value.goal);
+		String key = entry.getKey();
+		CowboyHelper value = entry.getValue();
+		System.out.println("Cowboy id: " + key + " has goal " + value.goal);
 	}
 
 		// A random generator we use to do random silly things
-		Random random = new Random();
+	Random random = new Random();
 
-		// 1. Try to spawn a cowboy.
+	// 1. Try to spawn a cowboy.
 
-		// Randomly select a job.
-		String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
+	// Randomly select a job.
+	String newJob = this.game.jobs.get(random.nextInt(this.game.jobs.size()));
 
-		// Count cowboys with selected job
-		int jobCount = 0;
-		for (int i = 0; i < this.player.cowboys.size(); i++)
+	// Count cowboys with selected job
+	int jobCount = 0;
+	for (int i = 0; i < this.player.cowboys.size(); i++)
 	{
-			Cowboy cowboy = this.player.cowboys.get(i);
+		Cowboy cowboy = this.player.cowboys.get(i);
 
-			if(!cowboy.isDead && cowboy.job.equals(newJob))
+		if(!cowboy.isDead && cowboy.job.equals(newJob))
 		{
-				jobCount++;
-			}
+			jobCount++;
 		}
+	}
 
-		// Call in the new cowboy with that job if there aren't too many
-		//   cowboys with that job already.
-		if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
+	// Call in the new cowboy with that job if there aren't too many
+	//   cowboys with that job already.
+	if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
 	{
-			this.player.youngGun.callIn(newJob);
-		}
+		this.player.youngGun.callIn(newJob);
+	}
 
 	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
 	{
-	  cowboyHelper.Act(game);
+		cowboyHelper.Act(game);
 	}
 
 		System.out.println("Ending my turn.");
@@ -258,7 +258,7 @@ public class AI extends BaseAI
 	{
 		// no need to make a path to here...
 		if (start == goal)
-	{
+		{
 			return new ArrayList<Tile>();
 		}
 
@@ -279,19 +279,19 @@ public class AI extends BaseAI
 			// cycle through the tile's neighbors.
 			List<Tile> neighbors = inspect.getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++)
-		{
+			{
 				Tile neighbor = neighbors.get(i);
 
 				// If we found the goal we've found the path!
 				if (neighbor == goal)
-		{
+				{
 					// Follow the path backward starting at the goal and return it.
 					List<Tile> path = new ArrayList<Tile>();
 					path.add(goal);
 
 					// Starting at the tile we are currently at, insert them retracing our steps till we get to the starting tile
 					for (Tile step = inspect; step != start; step = cameFrom.get(step))
-			{
+					{
 						path.add(0, step);
 					}
 
@@ -299,7 +299,8 @@ public class AI extends BaseAI
 				}
 
 				// if the tile exists, has not been explored or added to the fringe yet, and it is pathable
-				if (neighbor != null && !cameFrom.containsKey(neighbor) && neighbor.isPathable()) {
+				if (neighbor != null && !cameFrom.containsKey(neighbor) && neighbor.isPathable())
+				{
 					// add it to the tiles to be explored and add where it came from.
 					fringe.add(neighbor);
 					cameFrom.put(neighbor, inspect);
