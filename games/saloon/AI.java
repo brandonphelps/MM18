@@ -166,6 +166,39 @@ public class AI extends BaseAI
 			goallessPianos.remove(pianoIndex);
 		}
 
+		while(joblessCowboys.size() > 0)
+		{
+		  double MaxQualification = 0;
+		  int myCowboyIndex = 0;
+		  int targetCowboyIndex = 0;
+		  // do note we are iterating over all the cowboys
+		  for(int i = 0; i < game.cowboys.size(); i++)
+		  {
+		    // if the cowboy is the enemies then they are potential target
+		    if(!game.cowboys.get(i).owner.equals(player)) 
+		    {
+		      AttackGoal a = new AttackGoal(game, game.cowboys.get(i).id);
+		      // iterate over our cowboys that do not have jobs
+		      for(int j = 0; j < joblessCowboys.size(); j++)
+		      {
+			double temp = a.Qualification(joblessCowboys.get(j));
+
+			if(MaxQualification < temp)
+			{
+			  MaxQualification = temp;
+			  targetCowboyIndex = i;
+			  myCowboyIndex = j;
+			}
+		      }
+		    }
+		  }
+		  joblessCowboys.get(myCowboyIndex).log("Attacking...");
+
+		  cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(myCowboyIndex), new AttackGoal(game, game.cowboys.get(targetCowboyIndex).id)));
+
+		  joblessCowboys.remove(myCowboyIndex);
+		}
+
 		for(Furnishing piano: goallessPianos)
 		piano.log("X");
             
