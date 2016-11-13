@@ -46,13 +46,12 @@ public class DangerAvoidance
 		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
 		int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
 
-		int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
-		if(minDanger == alternateADanger)
+		if(alternateADanger && (alternateADanger < moveTileDanger && alternateADanger < alternateBDanger))
 		{
-		  moveTile = alternateTileA;
-		} else if(minDanger == alternateBDanger)
+			moveTile = alternateTileA;
+		} else if(alternateBDanger && (alternateBDanger < moveTileDanger && alternateBDanger < alternateADanger))
 		{
-		  moveTile = alternateTileB;
+			moveTile = alternateTileB;
 		}
 	}
 
