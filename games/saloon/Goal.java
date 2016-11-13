@@ -4,6 +4,7 @@ package games.saloon;
 
 public abstract class Goal
 {
+  public boolean IsFinished = false;
   public Goal()
   {
     
