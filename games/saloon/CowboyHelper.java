@@ -2,6 +2,7 @@
 package games.saloon;
 
 import java.util.List;
+import java.util.Queue;
 
 public class CowboyHelper
 {

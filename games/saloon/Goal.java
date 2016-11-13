@@ -9,6 +9,5 @@ public abstract class Goal
   }
   public abstract void Act(Cowboy cowboy, Game game);
   public abstract Tile TargetTile();
-  public abstract double Qualified(Cowboy cowboy);
+  public abstract double Qualification(Cowboy cowboy);
 }
-

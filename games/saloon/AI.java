@@ -71,7 +71,23 @@ public class AI extends BaseAI
   public String activeCowboyId = null;
 
   public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
+
+  public HashMap<String, Boolean> pianoHasGoals = new HashMap<String, Boolean>();
   
+  public List<PianoGoal> GeneratePianoGoals(List<Cowboy> joblessGoals, List<Furnishing> pianos)
+  {
+    List<PianoGoal> pianoGoals = new ArrayList<PianoGoal>();
+
+    for(int i = 0; i < pianos.size(); i++)
+    {
+      for(int j = 0; j < joblessGoals.size(); j++)
+      {
+	
+      }
+    }
+    return pianoGoals;
+  }
+
     /**
      * This is called every time it is this AI.player's turn.
      *
@@ -92,6 +108,31 @@ public class AI extends BaseAI
         System.out.println("Start of my turn: " + this.game.currentTurn);
 
 
+	// Generates all valid goals
+
+	// 
+	List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
+	for(int i = 0; i < this.player.cowboys.size(); i++)
+	{
+	  Cowboy cowboy = this.player.cowboys.get(i);
+	  joblessCowboys.add(cowboy);
+	}
+
+	List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
+
+	for (int i = 0; i < this.game.furnishings.size(); i++)
+	{
+	  Furnishing furnishing = this.game.furnishings.get(i);
+
+	  if (furnishing.isPiano && !furnishing.isDestroyed)
+	  {
+ 
+	    goallessPianos.add(furnishing);
+	  }
+	}
+
+	List<PianoGoal> pianoGoals = GeneratePianoGoals(joblessCowboys, goallessPianos);
+
 	// get list of pianos
 	List<Furnishing> pianos = new ArrayList<Furnishing>();
 
@@ -101,6 +142,7 @@ public class AI extends BaseAI
 
 	  if (furnishing.isPiano && !furnishing.isDestroyed)
 	  {
+ 
 	    pianos.add(furnishing);
 	  }
 	}
@@ -112,15 +154,15 @@ public class AI extends BaseAI
 	  Cowboy cowboy = this.player.cowboys.get(i);
 	  if(cowboysToHelpers.get(cowboy.id) != null)
 	  {
-	    if(cowboysToHelpers.get(cowboy.id).goal.isFinished)
+	    if(cowboysToHelpers.get(cowboy.id).goal.IsFinished)
 	    {
-	      cowboysToHelpers.get(cowboy.id).goal = new PianoGoal(pianos.get(piano_index));
+	      cowboysToHelpers.get(cowboy.id).goal = new PianoGoal(game, pianos.get(piano_index).id);
 	    }
 	    cowboysToHelpers.get(cowboy.id).SetCowboy(cowboy);
 	  }
 	  else
 	  {
-	    cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(pianos.get(piano_index))));	    
+	    cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(game, pianos.get(piano_index).id)));
 	  }
 	  piano_index += 1;
 	  if(piano_index >= pianos.size())
@@ -129,62 +171,12 @@ public class AI extends BaseAI
 	  }
 	}
 
-        // Find the active cowboy to try to do things with
-        Cowboy activeCowboy = null;
-
-	CowboyHelper activeC = null;
-
-	boolean foundId = false;
-
-	for(int i = 0; i < this.player.cowboys.size(); i++)
+	for (Map.Entry<String, CowboyHelper> entry : cowboysToHelpers.entrySet())
 	{
-	  Cowboy cowboy = this.player.cowboys.get(i);
-
-	  if(cowboy.isDead && activeCowboyId == cowboy.id)
-	  {
-	    System.out.println("My cowboy died: " + cowboy.id);
-	    activeCowboyId = null;
-	    break;
-	  }
-	  if(cowboy.id == activeCowboyId)
-	  {
-	    foundId = true;
-	    break;
-	  }
+	  String key = entry.getKey();
+	  CowboyHelper value = entry.getValue();
+	  System.out.println("Cowboy id: " + key + " has goal " + value.goal);
 	}
-
-	if(!foundId)
-	{
-	  activeCowboyId = null;
-	}
-	
-	List<Cowboy> activeCowboys = new ArrayList<Cowboy>();
-        for (int i = 0; i < this.player.cowboys.size(); i++)
-	{
-	  Cowboy cowboy = this.player.cowboys.get(i);
-
-	  System.out.println("Current activeCowboyid: " + activeCowboyId);
-	  
-	  // if this cowboy is not dead then make him our active cowboy we will try to control
-	  if(!cowboy.isDead)
-	  {
-	    System.out.println("cowboy isn't dead: " + cowboy.id);
-	    if(activeCowboyId == null)
-	    {
-	      System.out.println("Obtained new cowboy with id: " + cowboy.id);
-	      activeCowboyId = cowboy.id;
-	      activeCowboy = cowboy;
-	    }
-	    else
-	    {
-	      if(cowboy.id.equals(activeCowboyId))
-	      {
-		System.out.println("Setting active cowboy to: " + activeCowboyId);
-		activeCowboy = cowboy;
-	      }
-	    }
-	  }
-        }
 
         // A random generator we use to do random silly things
         Random random = new Random();
@@ -210,7 +202,6 @@ public class AI extends BaseAI
         //   cowboys with that job already.
         if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
 	{
-            System.out.println("1. Calling in: " + newJob);
             this.player.youngGun.callIn(newJob);
         }
 
@@ -218,51 +209,6 @@ public class AI extends BaseAI
 	{
 	  cowboyHelper.Act(game);
 	}
-
-	/*
-        // Now lets use him
-        if (activeCowboy != null)
-	{
-
-            // 4. Try to act with active cowboy
-            if (!activeCowboy.isDead && activeCowboy.turnsBusy == 0)
-	    {
-                // Get a random neighboring tile.
-                List<Tile> neighbors = activeCowboy.tile.getNeighbors();
-                Tile neighbor = neighbors.get(random.nextInt(neighbors.size()));
-
-                // Based on job, act accordingly.
-                if (activeCowboy.job.equals("Bartender"))
-		{
-                    // Bartenders dispense brews freely, but they still manage to get their due.
-                    String direction = Tile.DIRECTIONS[random.nextInt(Tile.DIRECTIONS.length)];
-                    System.out.println("4. Bartender acting on Tile #" + neighbor.id + " with drunkDirection: " + direction);
-                    activeCowboy.act(neighbor, direction);
-                }
-                else if (activeCowboy.job.equals("Brawler"))
-		{
-                    // Brawlers' brains are so pickled, they hardly know friend from foe.
-                    // Probably don't ask them act on your behalf.
-                    System.out.println("4. Brawlers cannot act");
-                }
-                else if (activeCowboy.job.equals("Sharpshooter"))
-		{
-                    // Sharpshooters aren't as quick as they used to be, and all that ruckus around them
-                    // requires them to focus when taking aim.
-                    if (activeCowboy.focus > 0)
-		    {
-                        System.out.println("4. Sharpshooter acting on Tile #" + neighbor.id);
-                        activeCowboy.act(neighbor);
-                    }
-                    else
-		    {
-                        System.out.println("4. Sharpshooter doesn't have enough focus. (focus == " + activeCowboy.focus + ")");
-                    }
-                }
-            }
-        }
-	*/
-
 
         System.out.println("Ending my turn.");
 

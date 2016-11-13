@@ -3,70 +3,83 @@ package games.saloon;
 
 import java.util.List;
 
+
+
 public class PianoGoal extends Goal
 {
+  public static int next_id = 0;
+  public int id = 0;
   private Furnishing piano = null;
+  private String piano_id = "";
 
   public PianoGoal()
   {
     
   }
 
-  public PianoGoal(Furnishing piano)
+  public PianoGoal(Game game, String piano_id)
   {
-    if(!piano.isPiano)
-    {
-      System.out.println("Oh no you setup a piano goal for a table!");
-    }
-
-    this.piano = piano;
+    this.piano_id = piano_id;
+    id = next_id++;
   }
 
-  public void SetPiano(Furnishing piano)
+  private Furnishing findPiano(Game game, String piano_id)
   {
-    if(!piano.isPiano)
+    Furnishing piano = null;
+
+    for(int i = 0; i < game.furnishings.size(); i++)
     {
-      System.out.println("You are trying to setup a table as a goal for as a piano");
+      if(game.furnishings.get(i).isPiano && game.furnishings.get(i).id == piano_id)
+      {
+	piano = game.furnishings.get(i);
+      }
     }
-    this.piano = piano;
+
+    return piano;
   }
 
   public void Act(Cowboy cowboy, Game game)
   {
-    if(piano == null){
+    Furnishing piano = findPiano(game, piano_id);
+
+    if(piano == null)
+    {
       System.out.println("I do not have a piano for my goal");
+      IsFinished = false;
     }
-
-    // There will always be pianos or the game will end. No need to check for existence.
-    // Attempt to move toward the piano by finding a path.
-    if(cowboy.canMove && !cowboy.isDead)
+    else
     {
-      // Find a path of tiles to the piano from our active cowboy's tile
-      List<Tile> path = PathFinder.findPath(cowboy.tile, piano.tile);
-
-      // if there is a path, move along it
-      //      length 0 means no path could be found to the tile
-      //      length 1 means the piano is adjacent, and we can't move onto the same tile as the piano
-      if(path.size() > 1)
+      // There will always be pianos or the game will end. No need to check for existence.
+      // Attempt to move toward the piano by finding a path.
+      if(cowboy.canMove && !cowboy.isDead)
       {
-	cowboy.move(path.get(0));
-      }
-    }
+	// Find a path of tiles to the piano from our active cowboy's tile
+	List<Tile> path = PathFinder.findPath(cowboy.tile, piano.tile);
 
-    // 3. Try to play a nearby piano.
-    if(!cowboy.isDead && cowboy.turnsBusy == 0)
-    {
-      System.out.println("Trying to use Cowboy #" + cowboy.id);
-
-      List<Tile> neighbors = cowboy.tile.getNeighbors();
-
-      for(int i = 0; i < neighbors.size(); i++)
-      {
-	Tile neighbor = neighbors.get(i);
-	if(neighbor.furnishing != null && neighbor.furnishing.isPiano)
+	// if there is a path, move along it
+	//      length 0 means no path could be found to the tile
+	//      length 1 means the piano is adjacent, and we can't move onto the same tile as the piano
+	if(path.size() > 1)
 	{
-	  cowboy.play(neighbor.furnishing);
-	  break;
+	  cowboy.move(path.get(0));
+	}
+      }
+
+      // 3. Try to play a nearby piano.
+      if(!cowboy.isDead && cowboy.turnsBusy == 0)
+      {
+	System.out.println("Trying to use Cowboy #" + cowboy.id);
+
+	List<Tile> neighbors = cowboy.tile.getNeighbors();
+
+	for(int i = 0; i < neighbors.size(); i++)
+	{
+	  Tile neighbor = neighbors.get(i);
+	  if(neighbor.furnishing != null && neighbor.furnishing.isPiano)
+	  {
+	    cowboy.play(neighbor.furnishing);
+	    break;
+	  }
 	}
       }
     }
@@ -81,7 +94,13 @@ public class PianoGoal extends Goal
     return null;
   }
 
-  public double Qualified(Cowboy cowboy)
+  public double Qualification(Cowboy cowboy)
   {
+    return 0;
+  }
+
+  public String toString()
+  {
+    return "Piano Id: " + id + " with piano " + piano_id;
   }
 }
