@@ -74,41 +74,14 @@ public class PianoGoal extends Goal
           if(moveTileDanger >= Constants.MEDIUM_DANGER_THRESHOLD)
           {
             //We are in some danger. See if other places are safer.
-            int targetXCoord = this.TargetTile().x;
-            int targetYCoord = this.TargetTile().y;
-            Tile alternateTileA, alternateTileB;
-            if(moveTile == cowboy.tile.tileNorth || moveTile == cowboy.tile.tileSouth)
-            {
-              //We are moving on the y axis. alternate tiles are on either side on x axis.
-              alternateTileB = cowboy.tile.tileWest;
-              alternateTileA = cowboy.tile.tileEast;
-            } else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
-            {
-              alternateTileA = cowboy.tile.tileNorth;
-              alternateTileB = cowboy.tile.tileSouth;
-            } else
-            {
-              System.out.println("Error finding alternate route.");
-              alternateTileA = moveTile;
-              alternateTileB = moveTile;
-            }
-
-            //Find min danger.
-            int alternateADanger = DangerAvoidance.CalculateTileDanger(_game, alternateTileA, cowboy);
-            int alternateBDanger = DangerAvoidance.CalculateTileDanger(_game, alternateTileB, cowboy);
-
-            int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
-            if(minDanger == alternateADanger)
-            {
-              moveTile = alternateTileA;
-            } else if(minDanger == alternateBDanger)
-            {
-              moveTile = alternateTileB;
-            }
+            DangerAvoidance.avoidDangerAndMove(_game, cowboy, moveTile);
+          } else
+          {
+            //We aren't in significant danger.
+            cowboy.move(moveTile);
           }
 
 
-          cowboy.move(moveTile);
         }
       }
 

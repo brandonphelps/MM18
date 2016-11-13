@@ -22,6 +22,42 @@ public class DangerAvoidance
 
 
 
+	static void avoidDangerAndMove(Game game, Cowboy cowboy, Tile moveTile)
+	{
+		int moveTileDanger = DangerAvoidance.CalculateTileDanger(game, moveTile, cowboy);
+		Tile alternateTileA, alternateTileB;
+		if(moveTile == cowboy.tile.tileNorth || moveTile == cowboy.tile.tileSouth)
+		{
+		  //We are moving on the y axis. alternate tiles are on either side on x axis.
+		  alternateTileB = cowboy.tile.tileWest;
+		  alternateTileA = cowboy.tile.tileEast;
+		} else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
+		{
+		  alternateTileA = cowboy.tile.tileNorth;///////////TODO: OPTIMIZE THIS!
+		  alternateTileB = cowboy.tile.tileSouth;
+		} else
+		{
+		  System.out.println("Error finding alternate route.");
+		  alternateTileA = moveTile;
+		  alternateTileB = moveTile;
+		}
+
+		//Find min danger.
+		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
+		int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
+
+		int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
+		if(minDanger == alternateADanger)
+		{
+		  moveTile = alternateTileA;
+		} else if(minDanger == alternateBDanger)
+		{
+		  moveTile = alternateTileB;
+		}
+	}
+
+
+
 	//returns null if the tile is not a valid location.
 	//Returns a number between 0 and 100. 100 is very dangerous.
 	static Integer CalculateTileDanger(Game game, Tile tile, Cowboy cowboy)
