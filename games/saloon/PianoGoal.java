@@ -98,14 +98,98 @@ public class PianoGoal extends Goal
 
         List<Tile> neighbors = cowboy.tile.getNeighbors();
 
+	boolean didPlay = false;
+
         for(int i = 0; i < neighbors.size(); i++)
         {
           Tile neighbor = neighbors.get(i);
           if(neighbor.furnishing != null && neighbor.furnishing.isPiano)
           {
-            cowboy.play(neighbor.furnishing);
+            didPlay = cowboy.play(neighbor.furnishing);
           }
       	}
+      }
+
+      // couldn't play a piano thus try to attack a unit. 
+      if(!didPlay)
+      {
+	if(cowboy.job.equal("Sharpshooter"))
+	{
+	  List<Tile> shootableTiles = PathFinder.GetShooterTiles(cowboy);
+
+	  String shootDirection = null;
+
+	  boolean shoot = true;
+
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.North, cowboy.focus))
+	  {
+	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    {
+	      shoot = false;
+	      break;
+	    }
+	  }
+
+	  if(shoot)
+	  {
+	    shootDirection = Constants.North;
+	  }
+
+	  shoot = true;
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.South, cowboy.focus))
+	  {
+	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    {
+	      shoot = false;
+	      break;
+	    }
+	  }
+
+	  if(shoot)
+	  {
+	    shootDirection = Constants.South;
+	  }
+
+	  shoot = true;
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.East, cowboy.focus))
+	  {
+	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    {
+	      shoot = false;
+	      break;
+	    }
+	  }
+
+	  if(shoot)
+	  {
+	    shootDirection = Constants.East;
+	  }
+
+	  shoot = true;
+	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.West, cowboy.focus))
+	  {
+	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    {
+	      shoot = false;
+	      break;
+	    }
+	  }
+
+	  if(shoot)
+	  {
+	    shootDirection = Constants.West;
+	  }
+
+	  
+	  if(shootDirection != null)
+	  {
+	    cowboy.act(shootDirection);
+	  }
+	}
+	else if(cowboy.job.equal("Bartender"))
+	{
+	  
+	}
       }
     }
   }

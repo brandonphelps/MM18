@@ -8,6 +8,63 @@ import java.util.HashMap;
 
 public class PathFinder
 {
+  public static List<Tile> GetShooterTiles(Cowboy shooter)
+  {
+    List<Tile> availableTargets = new ArrayList<Tile>();
+
+    availableTargets.addAll(getTiles(shooter.tile, Constants.North, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.South, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.West, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.East, shooter.focus));
+
+    return availableTargets;
+  }
+
+  public static List<Tile> getTiles(Tile start, String direction, int range)
+  {
+    List<Tile> tiles = new ArrayList<Tile>();
+
+    Tile current = start;
+
+    for(int i = 0; i < range; i++)
+    {
+      if(direction.equals(Constants.North))
+      {
+	if(current.tileNorth != null)
+	{
+	  tiles.add(current.tileNorth);
+	  current = current.tileNorth;
+	}
+      }
+      else if(direction.equals(Constants.South))
+      {
+	if(current.tileSouth != null)
+	{
+	  tiles.add(current.tileSouth);
+	  current = current.tileSouth;
+	}
+      }
+      else if(direction.equals(Constants.West))
+      {
+	if(current.tileWest != null)
+	{
+	  tiles.add(current.tileWest);
+	  current = current.tileWest;
+	}
+      }
+      else if(direction.equals(Constants.East))
+      {
+	if(current.tileEast != null)
+	{
+	  tiles.add(current.tileEast);
+	  current = current.tileEast;
+	}
+      }
+    }
+
+    return tiles;
+  }
+
   public static List<Tile> findPath(Tile start, Tile goal)
   {
     // no need to make a path to here...
