@@ -80,4 +80,8 @@ public class PianoGoal extends Goal
     }
     return null;
   }
+
+  public double Qualified(Cowboy cowboy)
+  {
+  }
 }

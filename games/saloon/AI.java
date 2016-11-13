@@ -112,6 +112,10 @@ public class AI extends BaseAI
 	  Cowboy cowboy = this.player.cowboys.get(i);
 	  if(cowboysToHelpers.get(cowboy.id) != null)
 	  {
+	    if(cowboysToHelpers.get(cowboy.id).goal.isFinished)
+	    {
+	      cowboysToHelpers.get(cowboy.id).goal = new PianoGoal(pianos.get(piano_index));
+	    }
 	    cowboysToHelpers.get(cowboy.id).SetCowboy(cowboy);
 	  }
 	  else

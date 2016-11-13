@@ -1,5 +1,3 @@
-
-
 package games.saloon;
 
 public abstract class Goal
@@ -9,8 +7,8 @@ public abstract class Goal
   {
     
   }
-
   public abstract void Act(Cowboy cowboy, Game game);
-
   public abstract Tile TargetTile();
+  public abstract double Qualified(Cowboy cowboy);
 }
+
