@@ -113,7 +113,7 @@ public class PianoGoal extends Goal
       // couldn't play a piano thus try to attack a unit. 
       if(!didPlay)
       {
-	if(cowboy.job.equal("Sharpshooter"))
+	if(cowboy.job.equals("Sharpshooter"))
 	{
 	  List<Tile> shootableTiles = PathFinder.GetShooterTiles(cowboy);
 
@@ -186,7 +186,7 @@ public class PianoGoal extends Goal
 	    cowboy.act(shootDirection);
 	  }
 	}
-	else if(cowboy.job.equal("Bartender"))
+	else if(cowboy.job.equals("Bartender"))
 	{
 	  
 	}

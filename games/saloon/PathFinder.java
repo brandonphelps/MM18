@@ -12,10 +12,10 @@ public class PathFinder
   {
     List<Tile> availableTargets = new ArrayList<Tile>();
 
-    availableTargets.addAll(getTiles(shooter.tile, Constants.North, shooter.focus));
-    availableTargets.addAll(getTiles(shooter.tile, Constants.South, shooter.focus));
-    availableTargets.addAll(getTiles(shooter.tile, Constants.West, shooter.focus));
-    availableTargets.addAll(getTiles(shooter.tile, Constants.East, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.NORTH, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.SOUTH, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.WEST, shooter.focus));
+    availableTargets.addAll(getTiles(shooter.tile, Constants.EAST, shooter.focus));
 
     return availableTargets;
   }
@@ -28,7 +28,7 @@ public class PathFinder
 
     for(int i = 0; i < range; i++)
     {
-      if(direction.equals(Constants.North))
+      if(direction.equals(Constants.NORTH))
       {
 	if(current.tileNorth != null)
 	{
@@ -36,7 +36,7 @@ public class PathFinder
 	  current = current.tileNorth;
 	}
       }
-      else if(direction.equals(Constants.South))
+      else if(direction.equals(Constants.SOUTH))
       {
 	if(current.tileSouth != null)
 	{
@@ -44,7 +44,7 @@ public class PathFinder
 	  current = current.tileSouth;
 	}
       }
-      else if(direction.equals(Constants.West))
+      else if(direction.equals(Constants.WEST))
       {
 	if(current.tileWest != null)
 	{
@@ -52,7 +52,7 @@ public class PathFinder
 	  current = current.tileWest;
 	}
       }
-      else if(direction.equals(Constants.East))
+      else if(direction.equals(Constants.EAST))
       {
 	if(current.tileEast != null)
 	{
