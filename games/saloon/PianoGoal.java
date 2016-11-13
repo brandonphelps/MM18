@@ -18,8 +18,6 @@ public class PianoGoal extends Goal
   private Furnishing piano = null;
   private String piano_id = "";
 
-  private Game _game;
-
   public PianoGoal(Game game)
   {
     super(game);
