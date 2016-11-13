@@ -59,6 +59,8 @@ public class DangerAvoidance
 		{
 			moveTile = alternateTileB;
 		}
+
+	    cowboy.move(moveTile);
 	}
 
 
