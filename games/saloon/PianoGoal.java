@@ -81,7 +81,7 @@ public class PianoGoal extends Goal
             {
               //This tile is the closest so far
               closestPianoTile = t;
-              closestPianoTileDistance = t;
+              closestPianoTileDistance = tileDistance;
             }
             if(!t.hasHazard && tileDistance < closestSafePianoTileDistance)
             {
