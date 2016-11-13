@@ -267,6 +267,12 @@ public class AI extends BaseAI
 		}
 	}
 
+
+	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
+	{
+		cowboyHelper.Act();
+	}
+
 	// Call in the new cowboy with that job if there aren't too many
 	//   cowboys with that job already.
 	if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
@@ -274,10 +280,8 @@ public class AI extends BaseAI
 		this.player.youngGun.callIn(newJob);
 	}
 
-	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
-	{
-		cowboyHelper.Act();
-	}
+
+	
 
 		System.out.println("Ending my turn.");
 
