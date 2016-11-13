@@ -12,5 +12,6 @@ public class Constants
 	static final String BARTENDER = "Bartender";
 
 	static final int MEDIUM_DANGER_THRESHOLD = 40;  // Defines minimum danger before we consider using a different path.
+	static final int HIGHISH_DANGER_THRESHOLD = 70;  // Defines minimum danger before we consider using a different path while trying to attack.
 
 }
