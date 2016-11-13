@@ -21,9 +21,9 @@ public class CowboyHelper
     cowboy = c;
   }
 
-  public void Act(Game game)
+  public void Act()
   {
-    goal.Act(cowboy, game);
+    goal.Act(cowboy);
   }
 
   public Tile TargetTile()

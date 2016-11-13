@@ -101,7 +101,7 @@ public class AI extends BaseAI
 
 
 
-		while(joblessCowboys.size() > 0 || goallessPianos.size() > 0)
+		while(joblessCowboys.size() > 0 && goallessPianos.size() > 0)
 		{
 			double MaxQualification = 0;
 			int pianoIndex = 0;
@@ -125,6 +125,7 @@ public class AI extends BaseAI
 			if(joblessCowboys.size() <= cowboyIndex)
 			{
 				System.out.println("I ran out of cowboys");
+				System.out.println("CowboyIndex: " + cowboyIndex);
 			}
 
 			if(goallessPianos.size() <= pianoIndex)
@@ -196,7 +197,7 @@ public class AI extends BaseAI
 		}
 		else
 		{
-			cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(game, pianos.get(piano_index).id)));
+		  			cowboysToHelpers.put(cowboy.id, new CowboyHelper(cowboy, new PianoGoal(game, pianos.get(piano_index).id)));
 		}
 		piano_index += 1;
 		if(piano_index >= pianos.size())
@@ -241,7 +242,7 @@ public class AI extends BaseAI
 
 	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
 	{
-		cowboyHelper.Act(game);
+		cowboyHelper.Act();
 	}
 
 		System.out.println("Ending my turn.");
