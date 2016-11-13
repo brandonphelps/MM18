@@ -80,13 +80,12 @@ public class PianoGoal extends Goal
           {
             //We are in some danger. See if other places are safer.
             DangerAvoidance.avoidDangerAndMove(_game, cowboy, moveTile);
-          } else
+          }
+	  else
           {
             //We aren't in significant danger.
             cowboy.move(moveTile);
           }
-
-
         }
       }
 

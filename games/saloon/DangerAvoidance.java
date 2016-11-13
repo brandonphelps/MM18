@@ -22,7 +22,7 @@ public class DangerAvoidance
 
 
 
-	static void avoidDangerAndMove(Game game, Cowboy cowboy, Tile moveTile)
+	public static void avoidDangerAndMove(Game game, Cowboy cowboy, Tile moveTile)
 	{
 		int moveTileDanger = DangerAvoidance.CalculateTileDanger(game, moveTile, cowboy);
 		Tile alternateTileA, alternateTileB;
@@ -31,26 +31,48 @@ public class DangerAvoidance
 		  //We are moving on the y axis. alternate tiles are on either side on x axis.
 		  alternateTileB = cowboy.tile.tileWest;
 		  alternateTileA = cowboy.tile.tileEast;
-		} else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
+		}
+		else if(moveTile == cowboy.tile.tileEast || moveTile == cowboy.tile.tileWest)
 		{
 		  alternateTileA = cowboy.tile.tileNorth;///////////TODO: OPTIMIZE THIS!
 		  alternateTileB = cowboy.tile.tileSouth;
-		} else
+		}
+		else
 		{
 		  System.out.println("Error finding alternate route.");
 		  alternateTileA = moveTile;
 		  alternateTileB = moveTile;
 		}
 
+
+		System.out.println("AlternateB: " + alternateTileB);
+		System.out.println("Game: " + game);
+		System.out.println("Cowboy: " + cowboy);
+
+		if(!alternateTileA.isPathable())
+		{
+		  System.out.println("AlternateA: " + alternateTileA + " is not pathable");
+		}
+
+		if(!alternateTileB.isPathable())
+		{
+		  System.out.println("AlternateB: " + alternateTileB + " is not pathable");
+		}
+
+
 		//Find min danger.
 		int alternateADanger = DangerAvoidance.CalculateTileDanger(game, alternateTileA, cowboy);
 		int alternateBDanger = DangerAvoidance.CalculateTileDanger(game, alternateTileB, cowboy);
 
+		//int alternateADanger = 10;
+		//int alternateBDanger = 2;
+		
 		int minDanger = Math.min(moveTileDanger, Math.min(alternateADanger, alternateBDanger));
 		if(minDanger == alternateADanger)
 		{
 		  moveTile = alternateTileA;
-		} else if(minDanger == alternateBDanger)
+		}
+		else if(minDanger == alternateBDanger)
 		{
 		  moveTile = alternateTileB;
 		}
@@ -60,7 +82,7 @@ public class DangerAvoidance
 
 	//returns null if the tile is not a valid location.
 	//Returns a number between 0 and 100. 100 is very dangerous.
-	static Integer CalculateTileDanger(Game game, Tile tile, Cowboy cowboy)
+        public static Integer CalculateTileDanger(Game game, Tile tile, Cowboy cowboy)
 	{
 		Integer dangerValue = 0;
 
@@ -68,7 +90,7 @@ public class DangerAvoidance
 		//Make sure this is a valid place to be.
 		if(tile.isPathable() == false)
 		{
-			return null;
+			return 1000;
 		}
 
 		//Calculate glass danger
@@ -170,7 +192,7 @@ public class DangerAvoidance
 
 
 
-	static java.util.ArrayList<Tile> GetBottlePath(Bottle b)
+	public static java.util.ArrayList<Tile> GetBottlePath(Bottle b)
 	{
 		java.util.ArrayList<Tile> bottlePath = new java.util.ArrayList<Tile>();
 
@@ -203,12 +225,12 @@ public class DangerAvoidance
 		return bottlePath;
 	}
 
-	static int ManhattanDistance(Tile from, Tile to)
+	public static int ManhattanDistance(Tile from, Tile to)
 	{
 		return Math.abs((to.x - from.x) + (to.y - from.y));
 	}
 
-	static int ThingsDangerToTile(int distanceToTile, int dangerValue, int dangerDropoff)
+	public static int ThingsDangerToTile(int distanceToTile, int dangerValue, int dangerDropoff)
 	{
 		int retVal = dangerValue - (distanceToTile-1)*dangerDropoff;
 		retVal = retVal < 0? 0: retVal;
