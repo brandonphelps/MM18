@@ -108,102 +108,116 @@ public class PianoGoal extends Goal
             didPlay = cowboy.play(neighbor.furnishing);
           }
       	}
-      }
 
-      // couldn't play a piano thus try to attack a unit. 
-      if(!didPlay)
-      {
-	if(cowboy.job.equals("Sharpshooter"))
+
+	// couldn't play a piano thus try to attack a unit. 
+	if(!didPlay)
 	{
-	  List<Tile> shootableTiles = PathFinder.GetShooterTiles(cowboy);
-
-	  Tile shootDirection = null;
-
-	  boolean shoot = true;
-
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.NORTH, cowboy.focus))
+	  if(cowboy.job.equals("Sharpshooter"))
 	  {
-	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    List<Tile> shootableTiles = PathFinder.GetShooterTiles(cowboy);
+
+	    String shootDirection = null;
+	  
+	    boolean shoot = true;
+
+	    for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.NORTH, cowboy.focus))
 	    {
-	      shoot = false;
-	      break;
+	      if(tile.cowboy != null)
+	      {
+		
+		if(tile.cowboy.owner.equals(_game.currentPlayer))
+		{
+		  shoot = false;
+		  break;
+		}
+	      }
 	    }
-	  }
 
-	  if(shoot)
-	  {
-	    shootDirection = Constants.NORTH;
-	  }
-
-	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.SOUTH, cowboy.focus))
-	  {
-	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    if(shoot)
 	    {
-	      shoot = false;
-	      break;
+	      shootDirection = Constants.NORTH;
 	    }
-	  }
 
-	  if(shoot)
-	  {
-	    shootDirection = Constants.SOUTH;
-	  }
-
-	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.EAST, cowboy.focus))
-	  {
-	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    shoot = true;
+	    for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.SOUTH, cowboy.focus))
 	    {
-	      shoot = false;
-	      break;
+	      if(tile.cowboy != null)
+	      {
+		if(tile.cowboy.owner.equals(_game.currentPlayer))
+		{
+		  shoot = false;
+		  break;
+		}
+	      }
 	    }
-	  }
 
-	  if(shoot)
-	  {
-	    shootDirection = Constants.EAST;
-	  }
-
-	  shoot = true;
-	  for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.WEST, cowboy.focus))
-	  {
-	    if(tile.cowboy.owner.equals(game.currentPlayer))
+	    if(shoot)
 	    {
-	      shoot = false;
-	      break;
+	      shootDirection = Constants.SOUTH;
 	    }
-	  }
 
-	  if(shoot)
-	  {
-	    shootDirection = Constants.WEST;
-	  }
+	    shoot = true;
+	    for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.EAST, cowboy.focus))
+	    {
+	      if(tile.cowboy != null)
+	      {
+		if(tile.cowboy.owner.equals(_game.currentPlayer))
+		{
+		  shoot = false;
+		  break;
+		}
+	      }
+	    }
+
+	    if(shoot)
+	    {
+	      shootDirection = Constants.EAST;
+	    }
+
+	    shoot = true;
+	    for(Tile tile : PathFinder.getTiles(cowboy.tile, Constants.WEST, cowboy.focus))
+	    {
+	      if(tile.cowboy != null)
+	      {
+		if(tile.cowboy.owner.equals(_game.currentPlayer))
+		{
+		  shoot = false;
+		  break;
+		}
+	      }
+	    }
+
+	    if(shoot)
+	    {
+	      shootDirection = Constants.WEST;
+	    }
 
 	  
-	  if(shootDirection != null)
-	  {
-	    if(shootDirection.equals(Constant.North))
+	    if(shootDirection != null)
 	    {
-	      cowboy.act(cowboy.tile.tileNorth);
-	    }
-	    else if(shootDireciton.equals(Constant.South))
-	    {
-	      cowboy.act(cowboy.tile.tileSouth);
-	    }
-	    else if(shootDirection.equals(Constant.West))
-	    {
-	      cowboy.act(cowboy.tile.tileWest);
-	    }
-	    else if(shootDirection.equals(Constant.East))
-	    {
-	      cowboy.act(cowboy.tile.tileEast);
+	      if(shootDirection.equals(Constants.NORTH))
+	      {
+		cowboy.act(cowboy.tile.tileNorth);
+	      }
+	      else if(shootDirection.equals(Constants.SOUTH))
+	      {
+		cowboy.act(cowboy.tile.tileSouth);
+	      }
+	      else if(shootDirection.equals(Constants.WEST))
+	      {
+		cowboy.act(cowboy.tile.tileWest);
+	      }
+	      else if(shootDirection.equals(Constants.EAST))
+	      {
+		cowboy.act(cowboy.tile.tileEast);
+	      }
 	    }
 	  }
-	}
-	else if(cowboy.job.equals("Bartender"))
-	{
+	  else if(cowboy.job.equals("Bartender"))
+	  {
 	  
+	  }
 	}
       }
     }
