@@ -73,20 +73,64 @@ public class AI extends BaseAI
   public HashMap<String, CowboyHelper> cowboysToHelpers = new HashMap<String, CowboyHelper>();
 
   public HashMap<String, Boolean> pianoHasGoals = new HashMap<String, Boolean>();
-  
-  public List<PianoGoal> GeneratePianoGoals(List<Cowboy> joblessGoals, List<Furnishing> pianos)
-  {
-    List<PianoGoal> pianoGoals = new ArrayList<PianoGoal>();
 
-    for(int i = 0; i < pianos.size(); i++)
+  public List<CowboyHelper> GeneratePianoGoals()
+  {
+    List<CowboyHelper> cowboysWithJobs = new ArrayList<CowboyHelper>();
+
+    List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
+
+    for(int i = 0; i < this.player.cowboys.size(); i++)
     {
-      for(int j = 0; j < joblessGoals.size(); j++)
+      Cowboy cowboy = this.player.cowboys.get(i);
+      joblessCowboys.add(cowboy);
+    }
+
+    List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
+
+    for (int i = 0; i < this.game.furnishings.size(); i++)
+    {
+      Furnishing furnishing = this.game.furnishings.get(i);
+
+      if (furnishing.isPiano && !furnishing.isDestroyed)
       {
-	
+ 
+	goallessPianos.add(furnishing);
       }
     }
-    return pianoGoals;
+
+
+
+    while(joblessCowboys.size() > 0 || goallessPianos.size() > 0)
+    {
+      double MaxQualification = 0;
+      int pianoIndex = 0;
+      int cowboyIndex = 0;
+
+      for(int i = 0; i < goallessPianos.size(); i++)
+      {
+	for(int j = 0; j < joblessCowboys.size(); j++)
+	{
+	  PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
+	  double temp = p.Qualification(joblessCowboys.get(j));
+	  if(MaxQualification < temp)
+	  {
+	    MaxQualification = temp;
+	    pianoIndex = i;
+	    cowboyIndex = j;
+	  }
+	}
+      }
+
+      cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
+
+      joblessCowboys.remove(cowboyIndex);
+      goallessPianos.remove(pianoIndex);
+    }
+
+    return cowboysWithJobs;
   }
+  
 
     /**
      * This is called every time it is this AI.player's turn.
@@ -111,27 +155,7 @@ public class AI extends BaseAI
 	// Generates all valid goals
 
 	// 
-	List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
-	for(int i = 0; i < this.player.cowboys.size(); i++)
-	{
-	  Cowboy cowboy = this.player.cowboys.get(i);
-	  joblessCowboys.add(cowboy);
-	}
 
-	List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
-
-	for (int i = 0; i < this.game.furnishings.size(); i++)
-	{
-	  Furnishing furnishing = this.game.furnishings.get(i);
-
-	  if (furnishing.isPiano && !furnishing.isDestroyed)
-	  {
- 
-	    goallessPianos.add(furnishing);
-	  }
-	}
-
-	List<PianoGoal> pianoGoals = GeneratePianoGoals(joblessCowboys, goallessPianos);
 
 	// get list of pianos
 	List<Furnishing> pianos = new ArrayList<Furnishing>();
@@ -205,7 +229,7 @@ public class AI extends BaseAI
             this.player.youngGun.callIn(newJob);
         }
 
-	for (CowboyHelper cowboyHelper : cowboysToHelpers.values())
+	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
 	{
 	  cowboyHelper.Act(game);
 	}
