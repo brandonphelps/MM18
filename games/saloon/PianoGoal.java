@@ -117,7 +117,7 @@ public class PianoGoal extends Goal
 	{
 	  List<Tile> shootableTiles = PathFinder.GetShooterTiles(cowboy);
 
-	  String shootDirection = null;
+	  Tile shootDirection = null;
 
 	  boolean shoot = true;
 
@@ -183,7 +183,22 @@ public class PianoGoal extends Goal
 	  
 	  if(shootDirection != null)
 	  {
-	    cowboy.act(shootDirection);
+	    if(shootDirection.equals(Constant.North))
+	    {
+	      cowboy.act(cowboy.tile.tileNorth);
+	    }
+	    else if(shootDireciton.equals(Constant.South))
+	    {
+	      cowboy.act(cowboy.tile.tileSouth);
+	    }
+	    else if(shootDirection.equals(Constant.West))
+	    {
+	      cowboy.act(cowboy.tile.tileWest);
+	    }
+	    else if(shootDirection.equals(Constant.East))
+	    {
+	      cowboy.act(cowboy.tile.tileEast);
+	    }
 	  }
 	}
 	else if(cowboy.job.equals("Bartender"))
