@@ -8,8 +8,8 @@ import java.util.List;
 public class PianoGoal extends Goal
 {
   
-  final float QUALIFICATION_DISTANCE_WEIGHT = 0.8f;
-  final float QUALIFICATION_HEALTH_WEIGHT = 0.2f;
+  final float QUALIFICATION_DISTANCE_WEIGHT = 1.0f;
+  final float QUALIFICATION_HEALTH_WEIGHT = 0.0f;
   
   final int MAX_DISTANCE=30;
   final int MAX_COWBOY_HEALTH=10;
