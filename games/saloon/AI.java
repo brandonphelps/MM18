@@ -160,7 +160,7 @@ public class AI extends BaseAI
 
 
 
-
+	/*
 		while(joblessCowboys.size() > 0)
 		{
 		  double MaxQualification = 0;
@@ -193,6 +193,8 @@ public class AI extends BaseAI
 
 		  joblessCowboys.remove(myCowboyIndex);
 		}
+
+	*/
 
 		for(Furnishing piano: goallessPianos)
 		  piano.log("X");
