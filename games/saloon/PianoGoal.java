@@ -74,6 +74,8 @@ public class PianoGoal extends Goal
         if(path.size() > 1)
         {
           Tile moveTile = path.get(0);
+
+          //If this path looks dangerous enough, try another path.
           int moveTileDanger = DangerAvoidance.CalculateTileDanger(_game, moveTile, cowboy);
 
           if(moveTileDanger >= Constants.MEDIUM_DANGER_THRESHOLD)
