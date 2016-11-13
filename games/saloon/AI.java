@@ -159,11 +159,23 @@ public class AI extends BaseAI
 				System.out.println("I ran out of pianos");
 			}
 			
+			
+			joblessCowboys.get(cowboyIndex).log(Integer.toString(pianoIndex));
+			goallessPianos.get(pianoIndex).log(Integer.toString(pianoIndex));
+			
+			
 			cowboysWithJobs.add(new CowboyHelper(joblessCowboys.get(cowboyIndex), new PianoGoal(game, goallessPianos.get(pianoIndex).id)));
 
 			joblessCowboys.remove(cowboyIndex);
 			goallessPianos.remove(pianoIndex);
 		}
+
+        for(Furnishing piano: goallessPianos)
+            piano.log("X");
+            
+        for(Cowboy cowboy: joblessCowboys)
+            cowboy.log("X");
+            
 
 		return cowboysWithJobs;
 	}
