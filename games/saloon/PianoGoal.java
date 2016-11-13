@@ -104,7 +104,6 @@ public class PianoGoal extends Goal
           if(neighbor.furnishing != null && neighbor.furnishing.isPiano)
           {
             cowboy.play(neighbor.furnishing);
-            break;
           }
       	}
       }

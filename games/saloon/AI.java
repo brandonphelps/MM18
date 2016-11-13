@@ -74,18 +74,13 @@ public class AI extends BaseAI
 
 	public HashMap<String, Boolean> pianoHasGoals = new HashMap<String, Boolean>();
 
+	
+	List<Cowboy> joblessCowboys;
+
 	public List<CowboyHelper> GeneratePianoGoals()
 	{
+		
 		List<CowboyHelper> cowboysWithJobs = new ArrayList<CowboyHelper>();
-
-		List<Cowboy> joblessCowboys = new ArrayList<Cowboy>();
-
-		for(int i = 0; i < this.player.cowboys.size(); i++)
-		{
-			Cowboy cowboy = this.player.cowboys.get(i);
-			if(!cowboy.isDead)
-			    joblessCowboys.add(cowboy);
-		}
 
 		List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
 
@@ -233,6 +228,16 @@ public class AI extends BaseAI
 	// Generates all valid goals
 
 	// 
+	
+	joblessCowboys = new ArrayList<Cowboy>();
+	
+	for(int i = 0; i < this.player.cowboys.size(); i++)
+		{
+			Cowboy cowboy = this.player.cowboys.get(i);
+			if(!cowboy.isDead)
+			    joblessCowboys.add(cowboy);
+		}
+
 
 
 	// get list of pianos
@@ -306,15 +311,18 @@ public class AI extends BaseAI
 		cowboyHelper.Act();
 	}
 
+	System.out.println("Putting x number");
+	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
+	{
+		cowboyHelper.Act();
+	}
+
 	// Call in the new cowboy with that job if there aren't too many
 	//   cowboys with that job already.
 	if (this.player.youngGun.canCallIn && jobCount < this.game.maxCowboysPerJob)
 	{
 		this.player.youngGun.callIn(newJob);
 	}
-
-
-	
 
 		System.out.println("Ending my turn.");
 
