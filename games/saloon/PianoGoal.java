@@ -30,7 +30,12 @@ public class PianoGoal extends Goal
     id = next_id++;
   }
 
-  private Furnishing findPiano(String piano_id)
+  public Furnishing findPiano()
+  {
+    return(findPiano(piano_id));
+  }
+
+  public Furnishing findPiano(String piano_id)
   {
     Furnishing piano = null;
 
@@ -110,7 +115,7 @@ public class PianoGoal extends Goal
     if(cowboy.isDrunk || cowboy.isDead)
       return(0);
     
-    int distance = Math.abs(piano.tile.x - cowboy.tile.x) + Math.abs(piano.tile.y - cowboy.tile.y);
+    float distance = Math.abs(piano.tile.x - cowboy.tile.x) + Math.abs(piano.tile.y - cowboy.tile.y);
     
     
     float distanceFactor = (1 - (distance / MAX_DISTANCE));

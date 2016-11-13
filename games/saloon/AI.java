@@ -83,7 +83,8 @@ public class AI extends BaseAI
 		for(int i = 0; i < this.player.cowboys.size(); i++)
 		{
 			Cowboy cowboy = this.player.cowboys.get(i);
-			joblessCowboys.add(cowboy);
+			if(!cowboy.isDead)
+			    joblessCowboys.add(cowboy);
 		}
 
 		List<Furnishing> goallessPianos = new ArrayList<Furnishing>();
@@ -109,10 +110,32 @@ public class AI extends BaseAI
 
 			for(int i = 0; i < goallessPianos.size(); i++)
 			{
+				PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
+				
+				Furnishing piano = p.findPiano();
+				
+				HeatMap heatmap = new HeatMap();
+				
+				
+				System.out.println("PIANO AT " + piano.tile.x + ", " + piano.tile.y);
+				heatmap.SetValue(piano.tile.x, piano.tile.y, 99);
+				
+
+				
 				for(int j = 0; j < joblessCowboys.size(); j++)
 				{
-					PianoGoal p = new PianoGoal(game, goallessPianos.get(i).id);
 					double temp = p.Qualification(joblessCowboys.get(j));
+					
+					if(joblessCowboys.get(j).tile == null)
+					{
+					    System.out.println("NULL TILE FOUND");
+					}
+					else
+					{
+                        System.out.println("QUAL VAL: " + temp);
+					    heatmap.SetValue(joblessCowboys.get(j).tile.x, joblessCowboys.get(j).tile.y, temp);
+					}
+					
 					if(MaxQualification < temp)
 					{
 						MaxQualification = temp;
@@ -120,6 +143,9 @@ public class AI extends BaseAI
 						cowboyIndex = j;
 					}
 				}
+				
+				System.out.println(heatmap.toString());
+				
 			}
 
 			if(joblessCowboys.size() <= cowboyIndex)
