@@ -242,7 +242,7 @@ public class AI extends BaseAI
 
 	for (CowboyHelper cowboyHelper : GeneratePianoGoals())
 	{
-		cowboyHelper.Act(game);
+		cowboyHelper.Act();
 	}
 
 		System.out.println("Ending my turn.");
