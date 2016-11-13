@@ -207,7 +207,7 @@ public class AI extends BaseAI
 
 	for (CowboyHelper cowboyHelper : cowboysToHelpers.values())
 	{
-	  cowboyHelper.Act(game);
+	  cowboyHelper.Act();
 	}
 
         System.out.println("Ending my turn.");
