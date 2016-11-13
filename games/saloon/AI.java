@@ -326,7 +326,7 @@ public class AI extends BaseAI
 		if(!((this.player.youngGun.callInTile.cowboy != null) && (this.player.youngGun.callInTile.cowboy.owner == game.currentPlayer)))
 		{
 			//Make sure this tile doesn't have a piano
-			if(this.player.youngGun.callInTile.furnishing.isPiano == false)
+		        if((this.player.youngGun.callInTile.furnishing != null) && (this.player.youngGun.callInTile.furnishing.isPiano == false))
 			{
 				//Spawn a cowboy with a random job
 				boolean newJobMade = false;
