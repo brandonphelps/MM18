@@ -184,9 +184,9 @@ public class AI extends BaseAI
 		    {
 		      AttackGoal a = new AttackGoal(game, game.cowboys.get(i).id);
 		      // iterate over our cowboys that do not have jobs
-		      for(int j = 0; j < joblessBrawler.size(); j++)
+		      for(int j = 0; j < joblessBrawlers.size(); j++)
 		      {
-			double temp = a.Qualification(joblessCowboys.get(j));
+			double temp = a.Qualification(joblessBrawlers.get(j));
 
 			if(MaxQualification < temp)
 			{
